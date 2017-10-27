@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,8 +32,13 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String palabra = "hola";
+        //String[] palabra = "patata".split("");
+        String palabra = "patata";
         String letra = request.getParameter("letra");
+        int resultado = palabra.indexOf(letra);
+        String intento = request.getParameter("intento");
+        int i = Integer.parseInt(intento);
+        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -42,13 +48,20 @@ public class Juego extends HttpServlet {
             out.println("<title>Servlet Juego</title>");
             out.println("</head>");
             out.println("<body>");
+            if(resultado != -1){
+                out.print("<p> Adivinaste la letra <p>");
+            }else{
+                out.print("<p> NO adivinaste la letra <p>");
+                i++;
+            }
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
                     + "Letra: <input name=\"letra\"><br>\n"
-                    + "<button>Enviar</button></form>");
-            out.println("<p>" + letra + "<p>");
+                    + "<input type=\"hidden\" value=\""+String.valueOf(i)+"\" name=\"intento\"><button>Enviar</button></form>");
+            out.println("<p>" + letra + " e intento "+ i +"<p>");
             out.println("</body>");
             out.println("</html>");
         }
+       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
