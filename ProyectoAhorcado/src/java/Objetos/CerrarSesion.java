@@ -8,18 +8,15 @@ package Objetos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author XKIER
  */
-//@WebServlet(name="Juego", urlPatterns={"/Ahorcado"})
-public class Juego extends HttpServlet {
+public class CerrarSesion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,42 +29,20 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //String[] palabra = "patata".split("");
-        String palabra = "patata";
-        String letra = request.getParameter("letra");
-        int resultado = palabra.indexOf(letra);
-        HttpSession sesion = request.getSession();
-        if (sesion.getAttribute("contador") != null) {
-            sesion.setAttribute("contador", (int) sesion.getAttribute("contador"));
-        } else {
-            sesion.setAttribute("contador", 0);
-        }
-
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            request.getSession().invalidate();
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Juego</title>");
+            out.println("<title>Servlet CerrarSesion</title>");            
             out.println("</head>");
             out.println("<body>");
-            if (resultado != -1) {
-                out.print("<p> Adivinaste la letra <p>");
-            } else {
-                out.print("<p> NO adivinaste la letra <p>");
-                sesion.setAttribute("contador", (int) sesion.getAttribute("contador") + 1);
-            }
-            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
-                    + "Letra: <input name=\"letra\"><br>\n"
-                    + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
-                    + "            <button>Cerrar Sesion</button></form>\n"
-                    + "    </body>");
-            out.println("<p>" + letra + " e intento " + sesion.getAttribute("contador") + "<p>");
+            out.println("<h1>Servlet CerrarSesion at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

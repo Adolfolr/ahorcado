@@ -4,9 +4,17 @@
         <servlet-name>Juego</servlet-name>
         <servlet-class>Objetos.Juego</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CerrarSesion</servlet-name>
+        <servlet-class>Objetos.CerrarSesion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CerrarSesion</servlet-name>
+        <url-pattern>/CerrarSesion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
