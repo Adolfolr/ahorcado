@@ -7,6 +7,7 @@ package Objetos;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,15 +33,22 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //String[] palabra = "patata".split("");
+
+        String[] numeroDeLetras = "patata".split("");
         String palabra = "patata";
         String letra = request.getParameter("letra");
         int resultado = palabra.indexOf(letra);
         HttpSession sesion = request.getSession();
         if (sesion.getAttribute("contador") != null) {
             sesion.setAttribute("contador", (int) sesion.getAttribute("contador"));
+            sesion.setAttribute("listaAciertos", (ArrayList<String>) sesion.getAttribute("listaAciertos"));
+
+            //ArrayList<Integer> list = (ArrayList<Integer>)request.getSession().getAttribute("list");
         } else {
             sesion.setAttribute("contador", 0);
+            //ArrayList<String> listaAciertos = new ArrayList<String>();
+            ArrayList<String> listaAciertos = new ArrayList<String>();
+            sesion.setAttribute("listaAciertos", listaAciertos);
         }
 
         response.setContentType("text/html;charset=UTF-8");
@@ -54,6 +62,9 @@ public class Juego extends HttpServlet {
             out.println("<body>");
             if (resultado != -1) {
                 out.print("<p> Adivinaste la letra <p>");
+                ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
+                aux.add(letra);
+                sesion.setAttribute("listaAciertos", aux);
             } else {
                 out.print("<p> NO adivinaste la letra <p>");
                 sesion.setAttribute("contador", (int) sesion.getAttribute("contador") + 1);
@@ -64,6 +75,21 @@ public class Juego extends HttpServlet {
                     + "            <button>Cerrar Sesion</button></form>\n"
                     + "    </body>");
             out.println("<p>" + letra + " e intento " + sesion.getAttribute("contador") + "<p>");
+            out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
+            ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
+            out.println(aux.size()+"<br>");
+            for (int j = 0; j < numeroDeLetras.length; j++) {
+                boolean esta = false;
+                for (int f = 0; f < aux.size(); f++) {
+                    if (numeroDeLetras[j].equals(aux.get(f))) {
+                        out.println(numeroDeLetras[j]);
+                        esta = true;
+                    } 
+                }
+                if (esta==false) {
+                        out.println("_");
+                    }
+            }
             out.println("</body>");
             out.println("</html>");
         }
