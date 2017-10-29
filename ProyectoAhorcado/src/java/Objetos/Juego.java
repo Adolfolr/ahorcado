@@ -33,19 +33,27 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String[] numeroDeLetras = "patata".split("");
-        String palabra = "patata";
+        
+        //Palabra que hay que adivinar
+        String palabra = "esternocleidomastoideo";
+        
+        //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
+        String[] saberPosicionLetra = palabra.split("");
+        
+        //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
+        
+        //Saber si la letra esta en la palabra. Si no esta debolvera un -1
         int resultado = palabra.indexOf(letra);
-        HttpSession sesion = request.getSession();
-        if (sesion.getAttribute("contador") != null) {
-            sesion.setAttribute("contador", (int) sesion.getAttribute("contador"));
-            sesion.setAttribute("listaAciertos", (ArrayList<String>) sesion.getAttribute("listaAciertos"));
 
+        //Recogemos la sesion
+        HttpSession sesion = request.getSession();
+        if (sesion.getAttribute("intentosFallidos") != null) { //Si la sesion existe entonces NO hacemos nada
+            //sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos"));
+            //sesion.setAttribute("listaAciertos", (ArrayList<String>) sesion.getAttribute("listaAciertos"));
             //ArrayList<Integer> list = (ArrayList<Integer>)request.getSession().getAttribute("list");
-        } else {
-            sesion.setAttribute("contador", 0);
+        } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas) 
+            sesion.setAttribute("intentosFallidos", 0);
             //ArrayList<String> listaAciertos = new ArrayList<String>();
             ArrayList<String> listaAciertos = new ArrayList<String>();
             sesion.setAttribute("listaAciertos", listaAciertos);
@@ -60,29 +68,38 @@ public class Juego extends HttpServlet {
             out.println("<title>Servlet Juego</title>");
             out.println("</head>");
             out.println("<body>");
-            if (resultado != -1) {
-                out.print("<p> Adivinaste la letra <p>");
+            
+            
+            if (resultado != -1) { //Si acertamos guardamos la letra acertada
+                out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 sesion.setAttribute("listaAciertos", aux);
-            } else {
-                out.print("<p> NO adivinaste la letra <p>");
-                sesion.setAttribute("contador", (int) sesion.getAttribute("contador") + 1);
+            } else { //Si fallamos aumenta en 1 en numero de intendos
+                out.print("<p style=\"color:red;\"> NO adivinaste la letra <p>");
+                sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
             }
+            
+            //Formulario para enviar otra letra
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
                     + "Letra: <input name=\"letra\"><br>\n"
                     + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
                     + "            <button>Cerrar Sesion</button></form>\n"
                     + "    </body>");
-            out.println("<p>" + letra + " e intento " + sesion.getAttribute("contador") + "<p>");
+            out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
             out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
-            ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
-            out.println(aux.size()+"<br>");
-            for (int j = 0; j < numeroDeLetras.length; j++) {
-                boolean esta = false;
+            
+            //"Pintar" letras acertadas
+            ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos"); //Cargamos la lista de aciertos
+            
+            //Primer bucle para ir comparando letra a letra. 
+            //Ejemlpo nuestra palabra es "patata" coge la primera letra "p" y la compara con la lista de aciertos, 
+            //si la letra "p" esta dentro de la lista dibuja "p", si no esta, entoces dibuja " _ "
+            for (int j = 0; j < saberPosicionLetra.length; j++) { 
+                boolean esta = false; //Si la letra esta en la lista TRUE, sino FALSE
                 for (int f = 0; f < aux.size(); f++) {
-                    if (numeroDeLetras[j].equals(aux.get(f))) {
-                        out.println(numeroDeLetras[j]);
+                    if (saberPosicionLetra[j].equals(aux.get(f))) { //Ejemplo "p" igual a ¿"t"? no, y ¿"a"? no y ¿"p"? SI dibujamos "p"  
+                        out.println(saberPosicionLetra[j]);
                         esta = true;
                     } 
                 }
