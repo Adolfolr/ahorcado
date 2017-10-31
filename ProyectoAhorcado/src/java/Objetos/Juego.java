@@ -21,7 +21,9 @@ import javax.servlet.http.HttpSession;
  */
 //@WebServlet(name="Juego", urlPatterns={"/Ahorcado"})
 public class Juego extends HttpServlet {
-
+  //Palabra que hay que adivinar
+ String palabra;
+ int numeroLetrasPintadas=0; 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,10 +37,10 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
         
         //Palabra que hay que adivinar
-        String palabra = "esternocleidomastoideo";
+        palabra = "rafa";
         
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
-        String[] saberPosicionLetra = palabra.split("");
+        String[] posicionLetra = palabra.split("");
         
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
@@ -95,11 +97,12 @@ public class Juego extends HttpServlet {
             //Primer bucle para ir comparando letra a letra. 
             //Ejemlpo nuestra palabra es "patata" coge la primera letra "p" y la compara con la lista de aciertos, 
             //si la letra "p" esta dentro de la lista dibuja "p", si no esta, entoces dibuja " _ "
-            for (int j = 0; j < saberPosicionLetra.length; j++) { 
+            for (int j = 0; j < posicionLetra.length; j++) { 
                 boolean esta = false; //Si la letra esta en la lista TRUE, sino FALSE
                 for (int f = 0; f < aux.size(); f++) {
-                    if (saberPosicionLetra[j].equals(aux.get(f))) { //Ejemplo "p" igual a ¿"t"? no, y ¿"a"? no y ¿"p"? SI dibujamos "p"  
-                        out.println(saberPosicionLetra[j]);
+                    if (posicionLetra[j].equals(aux.get(f))) { //Ejemplo "p" igual a ¿"t"? no, y ¿"a"? no y ¿"p"? SI dibujamos "p"  
+                        out.println(posicionLetra[j]);
+                        numeroLetrasPintadas ++;
                         esta = true;
                     } 
                 }
@@ -107,10 +110,19 @@ public class Juego extends HttpServlet {
                         out.println("_");
                     }
             }
+            out.println("<br>"+numeroLetrasPintadas + "<br>");
+            out.println(palabra.length()+"<br>");
+            if (ganarpartida( (int)sesion.getAttribute("intentosFallidos"))){
+               out.println("Has ganado"); 
+            }
+            if (perderpartida( (int)sesion.getAttribute("intentosFallidos"))){
+               out.println("Has perdido"); 
+            }
+            
             out.println("</body>");
             out.println("</html>");
         }
-
+        numeroLetrasPintadas = 0;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -151,5 +163,22 @@ public class Juego extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    public boolean ganarpartida(int fallos){
+        if (numeroLetrasPintadas==palabra.length()&& fallos<6 ){
+            return true;
+        }
+        return false;
+    }
+    public boolean perderpartida(int fallos){
+        if(numeroLetrasPintadas!=palabra.length() && fallos == 6){
+            return true;
+        }
+        return false;
+    }
+   
+    public float calcularPuntuacion(int numeroFallos)
+    {
+        return 1;
+    }
 
 }
