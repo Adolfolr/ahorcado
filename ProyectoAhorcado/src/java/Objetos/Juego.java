@@ -21,10 +21,12 @@ import javax.servlet.http.HttpSession;
  */
 //@WebServlet(name="Juego", urlPatterns={"/Ahorcado"})
 public class Juego extends HttpServlet {
-  //Palabra que hay que adivinar
- String palabra;
- String color;
- int numeroLetrasPintadas=0; 
+    //Palabra que hay que adivinar
+
+    String palabra;
+    String color;
+    int numeroLetrasPintadas = 0;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,23 +38,24 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         //Palabra que hay que adivinar
         palabra = "RAFA";
-        String[] botones = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"}; 
-        
+        String[] botones = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
         String[] posicionLetra = palabra.split("");
-        
+
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
-        
+
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
         int resultado = -1;
         boolean seguimos = false;
-        if(letra!=null){
-        resultado = palabra.indexOf(letra);
-        seguimos = true;
+        if (letra != null) {
+            resultado = palabra.indexOf(letra);
+            seguimos = true;
+            System.out.println(letra);
         }
 
         //Recogemos la sesion
@@ -66,7 +69,7 @@ public class Juego extends HttpServlet {
             //ArrayList<String> listaAciertos = new ArrayList<String>();
             ArrayList<String> listaAciertos = new ArrayList<String>();
             sesion.setAttribute("listaAciertos", listaAciertos);
-            
+
             ArrayList<String> listaFallos = new ArrayList<String>();
             sesion.setAttribute("listaFallos", listaFallos);
         }
@@ -78,73 +81,72 @@ public class Juego extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Juego</title>");
+            out.println("<meta charset=\"UTF-8\">");
+            out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body>");
-            
-            
+            out.println(letra);
+            out.println("<br>");
+
             if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 sesion.setAttribute("listaAciertos", aux);
-            } else if(seguimos){ //Si fallamos aumenta en 1 en numero de intendos
+            } else if (seguimos) { //Si fallamos aumenta en 1 en numero de intendos
                 out.print("<p style=\"color:red;\"> NO adivinaste la letra <p>");
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
                 aux.add(letra);
                 sesion.setAttribute("listaFallos", aux);
             }
-            
+
             //Formulario para enviar otra letra
 //            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
 //                    + "Letra: <input name=\"letra\"><br>\n"
 //                    + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
 //                    + "            <button>Cerrar Sesion</button></form>\n");
-
-
 //            out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
 //            out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
-            
-            
-
-            
-            
             //"Pintar" letras acertadas
             ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos"); //Cargamos la lista de aciertos
-            
+
             //Primer bucle para ir comparando letra a letra. 
             //Ejemlpo nuestra palabra es "patata" coge la primera letra "p" y la compara con la lista de aciertos, 
             //si la letra "p" esta dentro de la lista dibuja "p", si no esta, entoces dibuja " _ "
-            for (int j = 0; j < posicionLetra.length; j++) { 
+            for (int j = 0; j < posicionLetra.length; j++) {
                 boolean esta = false; //Si la letra esta en la lista TRUE, sino FALSE
                 for (int f = 0; f < aux.size(); f++) {
                     if (posicionLetra[j].equals(aux.get(f))) { //Ejemplo "p" igual a ¿"t"? no, y ¿"a"? no y ¿"p"? SI dibujamos "p"  
                         out.println(posicionLetra[j]);
-                        numeroLetrasPintadas ++;
+                        numeroLetrasPintadas++;
                         esta = true;
-                    } 
-                }
-                if (esta==false) {
-                        out.println("_");
                     }
+                }
+                if (esta == false) {
+                    out.println("_");
+                }
             }
             out.println("<br>");
+            out.println("<br>");
             //Pintar botones
-            for(int b=0; b<botones.length; b++){
-                if(bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])){
-                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button disabled  style=\"background:"+color+"\">"+ botones[b] +"</button></form>");
-                }else{
-                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button >"+ botones[b] +"</button></form>");    
+            for (int b = 0; b < botones.length; b++) {
+                if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])) {
+                    out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button disabled  style=\"background:" + color + "\">" + botones[b] + "</button></form>");
+                } else {
+                    out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button >" + botones[b] + "</button></form>");
                 }
             }
-            out.println("<br>"+ numeroLetrasPintadas + "<br>");
-            out.println(palabra.length()+"<br>");
-            if (ganarpartida( (int)sesion.getAttribute("intentosFallidos"))){
-               out.println("Has ganado");
-               
+            // out.println("<br>"+ numeroLetrasPintadas + "<br>");
+            // out.println(palabra.length()+"<br>");
+            if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
+                out.println("<br>");
+                out.println("Has ganado");
+
             }
-            if (perderpartida( (int)sesion.getAttribute("intentosFallidos"))){
-               out.println("Has perdido"); 
+            if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
+                out.println("<br>");
+                out.println("Has perdido");
             }
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
             out.println("</body>");
@@ -191,36 +193,38 @@ public class Juego extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    public boolean ganarpartida(int fallos){
-        if (numeroLetrasPintadas==palabra.length()&& fallos<6 ){
+
+    public boolean ganarpartida(int fallos) {
+        if (numeroLetrasPintadas == palabra.length() && fallos < 6) {
             return true;
         }
         return false;
     }
-    public boolean perderpartida(int fallos){
-        if(numeroLetrasPintadas!=palabra.length() && fallos == 6){
+
+    public boolean perderpartida(int fallos) {
+        if (numeroLetrasPintadas != palabra.length() && fallos == 6) {
             return true;
         }
         return false;
     }
-   
-    public float calcularPuntuacion(int numeroFallos)
-    {
+
+    public float calcularPuntuacion(int numeroFallos) {
         return 1;
     }
-    public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra){
-    for (int l=0; l<aciertos.size();l++){
-        if(aciertos.get(l).equals(nuevaLetra)){
-            color = "green";
-            return true;
+
+    public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra) {
+        for (int l = 0; l < aciertos.size(); l++) {
+            if (aciertos.get(l).equals(nuevaLetra)) {
+                color = "green";
+                return true;
+            }
         }
-    }
-    for (int l=0; l<fallos.size();l++){
-        if(fallos.get(l).equals(nuevaLetra)){
-             color = "red";
-            return true;
+        for (int l = 0; l < fallos.size(); l++) {
+            if (fallos.get(l).equals(nuevaLetra)) {
+                color = "red";
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 }
