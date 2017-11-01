@@ -37,7 +37,8 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
         
         //Palabra que hay que adivinar
-        palabra = "rafa";
+        palabra = "RAFA";
+        String[] botones = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"}; 
         
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
         String[] posicionLetra = palabra.split("");
@@ -59,6 +60,9 @@ public class Juego extends HttpServlet {
             //ArrayList<String> listaAciertos = new ArrayList<String>();
             ArrayList<String> listaAciertos = new ArrayList<String>();
             sesion.setAttribute("listaAciertos", listaAciertos);
+            
+            ArrayList<String> listaFallos = new ArrayList<String>();
+            sesion.setAttribute("listaFallos", listaFallos);
         }
 
         response.setContentType("text/html;charset=UTF-8");
@@ -80,6 +84,9 @@ public class Juego extends HttpServlet {
             } else { //Si fallamos aumenta en 1 en numero de intendos
                 out.print("<p style=\"color:red;\"> NO adivinaste la letra <p>");
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
+                ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
+                aux.add(letra);
+                sesion.setAttribute("listaFallos", aux);
             }
             
             //Formulario para enviar otra letra
@@ -90,6 +97,17 @@ public class Juego extends HttpServlet {
                     + "    </body>");
             out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
             out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
+            
+            //Prueba botones
+            for(int b=0; b<botones.length; b++){
+                if(bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])){
+                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button disabled>"+ botones[b] +"</button></form>");
+                }else{
+                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button>"+ botones[b] +"</button></form>");    
+                }
+            }
+
+            
             
             //"Pintar" letras acertadas
             ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos"); //Cargamos la lista de aciertos
@@ -180,5 +198,20 @@ public class Juego extends HttpServlet {
     {
         return 1;
     }
-
+    public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra){
+    for (int l=0; l<aciertos.size();l++){
+        if(aciertos.get(l).equals(nuevaLetra)){
+            System.out.println("ENTRO A");
+            System.out.println(aciertos.get(l));
+            return true;
+        }
+    }
+    for (int l=0; l<fallos.size();l++){
+        if(fallos.get(l).equals(nuevaLetra)){
+            System.out.println("ENTRO B");
+            return true;
+        }
+    }
+    return false;
+}
 }
