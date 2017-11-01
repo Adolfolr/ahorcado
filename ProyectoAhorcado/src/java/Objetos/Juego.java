@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 public class Juego extends HttpServlet {
   //Palabra que hay que adivinar
  String palabra;
+ String color;
  int numeroLetrasPintadas=0; 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +48,12 @@ public class Juego extends HttpServlet {
         String letra = request.getParameter("letra");
         
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
-        int resultado = palabra.indexOf(letra);
+        int resultado = -1;
+        boolean seguimos = false;
+        if(letra!=null){
+        resultado = palabra.indexOf(letra);
+        seguimos = true;
+        }
 
         //Recogemos la sesion
         HttpSession sesion = request.getSession();
@@ -76,12 +82,12 @@ public class Juego extends HttpServlet {
             out.println("<body>");
             
             
-            if (resultado != -1) { //Si acertamos guardamos la letra acertada
+            if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 sesion.setAttribute("listaAciertos", aux);
-            } else { //Si fallamos aumenta en 1 en numero de intendos
+            } else if(seguimos){ //Si fallamos aumenta en 1 en numero de intendos
                 out.print("<p style=\"color:red;\"> NO adivinaste la letra <p>");
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
@@ -90,22 +96,16 @@ public class Juego extends HttpServlet {
             }
             
             //Formulario para enviar otra letra
-            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
-                    + "Letra: <input name=\"letra\"><br>\n"
-                    + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
-                    + "            <button>Cerrar Sesion</button></form>\n"
-                    + "    </body>");
-            out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
-            out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
+//            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
+//                    + "Letra: <input name=\"letra\"><br>\n"
+//                    + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
+//                    + "            <button>Cerrar Sesion</button></form>\n");
+
+
+//            out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
+//            out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
             
-            //Prueba botones
-            for(int b=0; b<botones.length; b++){
-                if(bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])){
-                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button disabled>"+ botones[b] +"</button></form>");
-                }else{
-                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button>"+ botones[b] +"</button></form>");    
-                }
-            }
+            
 
             
             
@@ -128,15 +128,25 @@ public class Juego extends HttpServlet {
                         out.println("_");
                     }
             }
-            out.println("<br>"+numeroLetrasPintadas + "<br>");
+            out.println("<br>");
+            //Pintar botones
+            for(int b=0; b<botones.length; b++){
+                if(bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])){
+                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button disabled  style=\"background:"+color+"\">"+ botones[b] +"</button></form>");
+                }else{
+                out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\""+botones[b]+"\" name=\"letra\"><button >"+ botones[b] +"</button></form>");    
+                }
+            }
+            out.println("<br>"+ numeroLetrasPintadas + "<br>");
             out.println(palabra.length()+"<br>");
             if (ganarpartida( (int)sesion.getAttribute("intentosFallidos"))){
-               out.println("Has ganado"); 
+               out.println("Has ganado");
+               
             }
             if (perderpartida( (int)sesion.getAttribute("intentosFallidos"))){
                out.println("Has perdido"); 
             }
-            
+            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
             out.println("</body>");
             out.println("</html>");
         }
@@ -201,14 +211,13 @@ public class Juego extends HttpServlet {
     public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra){
     for (int l=0; l<aciertos.size();l++){
         if(aciertos.get(l).equals(nuevaLetra)){
-            System.out.println("ENTRO A");
-            System.out.println(aciertos.get(l));
+            color = "green";
             return true;
         }
     }
     for (int l=0; l<fallos.size();l++){
         if(fallos.get(l).equals(nuevaLetra)){
-            System.out.println("ENTRO B");
+             color = "red";
             return true;
         }
     }
