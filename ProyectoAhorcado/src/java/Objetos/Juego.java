@@ -214,6 +214,8 @@ public class Juego extends HttpServlet {
     }
 
     public float calcularPuntuacion(int numeroFallos) {
+        //Lo unico que hace es que la puntuacion es el numero de fallos de esa partida, 
+        //queda hacer lo de los jugadores y hacer la media de cada jugador
       if(ganarpartida(numeroFallos)|| perderpartida(numeroFallos)){
           puntuacion=numeroFallos;
       }
