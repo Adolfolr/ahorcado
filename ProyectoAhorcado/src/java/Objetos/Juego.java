@@ -26,6 +26,7 @@ public class Juego extends HttpServlet {
     String palabra;
     String color;
     int numeroLetrasPintadas = 0;
+    float puntuacion;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -141,12 +142,16 @@ public class Juego extends HttpServlet {
             // out.println(palabra.length()+"<br>");
             if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
-                out.println("Has ganado");
+                out.println("Has ganado"+"<br>");
+                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
+                out.println("Tu puntuacion es: "+puntuacion);
 
             }
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
-                out.println("Has perdido");
+                out.println("Has perdido"+"<br>");
+                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
+                out.println("Tu puntuacion es: "+puntuacion);
             }
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
             out.println("</body>");
@@ -209,7 +214,13 @@ public class Juego extends HttpServlet {
     }
 
     public float calcularPuntuacion(int numeroFallos) {
-        return 1;
+      if(ganarpartida(numeroFallos)|| perderpartida(numeroFallos)){
+          puntuacion=numeroFallos;
+      }
+      else{
+        puntuacion =0;  
+      }
+        return puntuacion;
     }
 
     public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra) {
