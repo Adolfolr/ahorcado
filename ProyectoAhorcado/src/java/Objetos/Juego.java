@@ -47,9 +47,11 @@ public class Juego extends HttpServlet {
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
         String[] posicionLetra = palabra.split("");
 
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
-
+        
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
         int resultado = -1;
         boolean seguimos = false;
