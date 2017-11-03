@@ -88,8 +88,6 @@ public class Juego extends HttpServlet {
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println(letra);
-            out.println("<br>");
 
             if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
@@ -103,7 +101,9 @@ public class Juego extends HttpServlet {
                 aux.add(letra);
                 sesion.setAttribute("listaFallos", aux);
             }
-
+            
+            out.println("Vidas restantes: "+ (6 - (int) sesion.getAttribute("intentosFallidos")));
+            out.println("<br>");
             //Formulario para enviar otra letra
 //            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
 //                    + "Letra: <input name=\"letra\"><br>\n"
@@ -219,7 +219,7 @@ public class Juego extends HttpServlet {
         //Lo unico que hace es que la puntuacion es el numero de fallos de esa partida, 
         //queda hacer lo de los jugadores y hacer la media de cada jugador
       if(ganarpartida(numeroFallos)|| perderpartida(numeroFallos)){
-          puntuacion=numeroFallos;
+          puntuacion=6-numeroFallos;
       }
       else{
         puntuacion =0;  

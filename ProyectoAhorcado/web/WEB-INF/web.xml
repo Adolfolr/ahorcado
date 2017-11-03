@@ -8,6 +8,7 @@
         <servlet-name>CerrarSesion</servlet-name>
         <servlet-class>Objetos.CerrarSesion</servlet-class>
     </servlet>
+        
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
