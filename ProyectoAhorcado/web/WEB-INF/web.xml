@@ -8,7 +8,16 @@
         <servlet-name>CerrarSesion</servlet-name>
         <servlet-class>Objetos.CerrarSesion</servlet-class>
     </servlet>
-        
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>Objetos.Login</servlet-class>
+        <init-param>
+            <param-name>FicheroLogin</param-name>
+            <param-value>/Recursos/fichero.txt</param-value>
+        </init-param>
+    </servlet>
+    
+    
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
