@@ -51,7 +51,7 @@ public class Juego extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
-        
+        boolean finPartida = false;
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
         int resultado = -1;
         boolean seguimos = false;
@@ -88,7 +88,7 @@ public class Juego extends HttpServlet {
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("Hola <b>"+ sesion.getAttribute("usuario")+ "<b>");
+            out.println("<h3> Hola <b>"+ sesion.getAttribute("usuario")+ "<b> tu mejor puntuacion es de "+ sesion.getAttribute("puntuacion")+ "</h3>");
 
             if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
@@ -133,9 +133,28 @@ public class Juego extends HttpServlet {
             }
             out.println("<br>");
             out.println("<br>");
+             if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
+                out.println("<br>");
+                out.println("<h1 style=\"color:green;\">Has ganado</h1><br>");
+                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
+                out.println("Tu puntuacion es: "+puntuacion);
+                finPartida = true;
+
+            }
+            if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
+                out.println("<br>");
+                out.println("<h1 style=\"color:red;\">Has perdido </h1>"+"<br>");
+                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
+                out.println("Tu puntuacion es: "+puntuacion);
+                finPartida = true;
+            }
+            out.println("<br>");
             //Pintar botones
             for (int b = 0; b < botones.length; b++) {
-                if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b])) {
+                if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b]) || finPartida ){
+                    if(finPartida){
+                        color = "Azure";
+                    }
                     out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button disabled  style=\"background:" + color + "\">" + botones[b] + "</button></form>");
                 } else {
                     out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button >" + botones[b] + "</button></form>");
@@ -143,19 +162,7 @@ public class Juego extends HttpServlet {
             }
             // out.println("<br>"+ numeroLetrasPintadas + "<br>");
             // out.println(palabra.length()+"<br>");
-            if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
-                out.println("<br>");
-                out.println("Has ganado"+"<br>");
-                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion es: "+puntuacion);
-
-            }
-            if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
-                out.println("<br>");
-                out.println("Has perdido"+"<br>");
-                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion es: "+puntuacion);
-            }
+           
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
             out.println("</body>");
             out.println("</html>");

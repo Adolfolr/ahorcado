@@ -1,4 +1,4 @@
 Clara clave1 10
 Adolfo clave2 26
 Rafa clave3 13
-Jose cara 0
+Jose face 0

@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
         String nameFile = fichero;
         InputStream resourceAsStream = servletContext.getResourceAsStream(nameFile);
 
-        ServletConfig servletConfig = this.getServletConfig();
+ //       ServletConfig servletConfig = this.getServletConfig();
 //        Integer lineStart = Integer.parseInt(servletConfig.getInitParameter("lineToStart"));
 
         try (PrintWriter out = response.getWriter()) {
@@ -91,7 +91,7 @@ public class Login extends HttpServlet {
                 out.println("<p> jugador: " + cargaFichero.get(i) + " clave: " + cargaFichero.get(i + 1) + " puntos: " + cargaFichero.get(i + 2) + "</p>");
                 if (usuario.equals(cargaFichero.get(i)) && password.equals(cargaFichero.get(i + 1))) {
                     autentificacion = true;
-                    puntuacion = cargaFichero.get(i+3);
+                    puntuacion = cargaFichero.get(i+2);
                 }
             }
             if(autentificacion){
