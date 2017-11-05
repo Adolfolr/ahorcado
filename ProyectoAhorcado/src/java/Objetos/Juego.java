@@ -88,6 +88,7 @@ public class Juego extends HttpServlet {
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body>");
+            out.println("Hola <b>"+ sesion.getAttribute("usuario")+ "<b>");
 
             if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");

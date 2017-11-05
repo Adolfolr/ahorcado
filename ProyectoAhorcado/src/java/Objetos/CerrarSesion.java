@@ -32,7 +32,7 @@ public class CerrarSesion extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             request.getSession().invalidate();
-            response.sendRedirect("/ProyectoAhorcado/index.html");
+            response.sendRedirect("/ProyectoAhorcado/login.html");
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
