@@ -149,6 +149,7 @@ public class Login extends HttpServlet {
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         fichero = getInitParameter("FicheroLogin");
+        
     }
 
 }

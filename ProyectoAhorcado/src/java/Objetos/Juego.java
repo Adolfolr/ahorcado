@@ -5,10 +5,18 @@
  */
 package Objetos;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +96,7 @@ public class Juego extends HttpServlet {
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h3> Hola <b>"+ sesion.getAttribute("usuario")+ "<b> tu mejor puntuacion es de "+ sesion.getAttribute("puntuacion")+ "</h3>");
+            out.println("<h3> Hola <b>" + sesion.getAttribute("usuario") + "<b> tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + "</h3>");
 
             if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
@@ -102,8 +110,8 @@ public class Juego extends HttpServlet {
                 aux.add(letra);
                 sesion.setAttribute("listaFallos", aux);
             }
-            
-            out.println("Vidas restantes: "+ (6 - (int) sesion.getAttribute("intentosFallidos")));
+
+            out.println("Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos")));
             out.println("<br>");
             //Formulario para enviar otra letra
 //            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
@@ -133,26 +141,29 @@ public class Juego extends HttpServlet {
             }
             out.println("<br>");
             out.println("<br>");
-             if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
+            if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
                 out.println("<h1 style=\"color:green;\">Has ganado</h1><br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion es: "+puntuacion);
+                float f = Float.parseFloat((String)sesion.getAttribute("puntuacion"));
+                float total = puntuacion + f;
+                out.println("Tu puntuacion de esta partida es: " + puntuacion +" total puntuación: "+total);
                 finPartida = true;
-
+                out.println("<br>");
             }
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
-                out.println("<h1 style=\"color:red;\">Has perdido </h1>"+"<br>");
+                out.println("<h1 style=\"color:red;\">Has perdido </h1>" + "<br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion es: "+puntuacion);
+                out.println("Tu puntuacion de esta partida es: " + puntuacion + "total puntuación: "+(String)sesion.getAttribute("puntuacion"));
                 finPartida = true;
+                out.println("<br>");
             }
             out.println("<br>");
             //Pintar botones
             for (int b = 0; b < botones.length; b++) {
-                if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b]) || finPartida ){
-                    if(finPartida){
+                if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b]) || finPartida) {
+                    if (finPartida) {
                         color = "Azure";
                     }
                     out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button disabled  style=\"background:" + color + "\">" + botones[b] + "</button></form>");
@@ -162,12 +173,36 @@ public class Juego extends HttpServlet {
             }
             // out.println("<br>"+ numeroLetrasPintadas + "<br>");
             // out.println(palabra.length()+"<br>");
-           
+
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
             out.println("</body>");
             out.println("</html>");
         }
         numeroLetrasPintadas = 0;
+        if (finPartida) {
+        ServletContext servletContext = request.getServletContext();
+//         String file = servletContext.getInitParameter("FicheroLogin");
+//            try {
+//                FileInputStream archivo = new FileInputStream((String)servletContext.getInitParameter("FicheroLogin"));
+//                int longitud = archivo.available();
+//                byte[] datos = new byte[longitud];
+//                archivo.read(datos);
+//                archivo.close();
+//                response.setContentType("application/octet-stream");
+//                response.setHeader("Content-Disposition", "attachment;filename=NOMBRE_ARCHIVO");
+//                ServletOutputStream ouputStream = response.getOutputStream();
+//                ouputStream.write(datos);
+//                ouputStream.flush();
+//                ouputStream.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
+//         guardarPuntuacion((String)sesion.getAttribute("usuario"), (String)sesion.getAttribute("puntuacion"), puntuacion, (String) serevletcontext.getInitParameter("FicheroLogin"));
+//        ServletContext servletContext = request.getServletContext();
+//        InputStream resourceAsStream = servletContext.getResourceAsStream(nameFile);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -226,12 +261,11 @@ public class Juego extends HttpServlet {
     public float calcularPuntuacion(int numeroFallos) {
         //Lo unico que hace es que la puntuacion es el numero de fallos de esa partida, 
         //queda hacer lo de los jugadores y hacer la media de cada jugador
-      if(ganarpartida(numeroFallos)|| perderpartida(numeroFallos)){
-          puntuacion=6-numeroFallos;
-      }
-      else{
-        puntuacion =0;  
-      }
+        if (ganarpartida(numeroFallos) || perderpartida(numeroFallos)) {
+            puntuacion = 6 - numeroFallos;
+        } else {
+            puntuacion = 0;
+        }
         return puntuacion;
     }
 
@@ -250,4 +284,19 @@ public class Juego extends HttpServlet {
         }
         return false;
     }
+//    public void guardarPuntuacion(String usuario, String antiguaPuntuacion, float nuevaPuntuacion, String fichero) throws IOException{
+//       
+//       File archivo = new File(fichero);
+//        BufferedWriter bw;
+//        if(archivo.exists()) {
+//            bw = new BufferedWriter(new FileWriter(archivo));
+//            bw.write("El fichero de texto ya estaba creado.");
+//        } else {
+//            bw = new BufferedWriter(new FileWriter(archivo));
+//            bw.write("Acabo de crear el fichero de texto.");
+//        }
+//        bw.close();
+//    }
+//    
+
 }
