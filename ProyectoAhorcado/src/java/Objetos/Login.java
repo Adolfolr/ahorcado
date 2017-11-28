@@ -50,7 +50,7 @@ public class Login extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
         
-        Map<String, Integer> myMap = new HashMap<String, Integer>();
+       // Map<String, Integer> myMap = new HashMap<String, Integer>();
 
         ServletContext servletContext = request.getServletContext();
         String nameFile = fichero;
@@ -67,10 +67,7 @@ public class Login extends HttpServlet {
             out.println("<title>Servlet login</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<p>Path of the file:" + nameFile + "</p>");
-            out.println("<p>Line to Start:" + 1 + "</p>");
-            if (resourceAsStream != null) {
-                out.println("<h2>Lines:</h2>");
+           if (resourceAsStream != null) {
                 InputStreamReader inputStream = new InputStreamReader(resourceAsStream);
                 BufferedReader reader = new BufferedReader(inputStream);
                 String lineRead;

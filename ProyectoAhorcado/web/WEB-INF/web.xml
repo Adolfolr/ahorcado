@@ -20,8 +20,10 @@
             <param-value>/Recursos/fichero.txt</param-value>
         </init-param>
     </servlet>
-    
-    
+    <servlet>
+        <servlet-name>BBDD</servlet-name>
+        <servlet-class>Objetos.BBDD</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -29,6 +31,10 @@
     <servlet-mapping>
         <servlet-name>CerrarSesion</servlet-name>
         <url-pattern>/CerrarSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BBDD</servlet-name>
+        <url-pattern>/BBDD</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
