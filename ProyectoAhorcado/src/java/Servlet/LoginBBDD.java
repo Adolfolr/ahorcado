@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Objetos;
+package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author rafael
  */
-public class ImprimirTablero extends HttpServlet {
+public class LoginBBDD extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,28 +31,28 @@ public class ImprimirTablero extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    BBDD bbdd = new BBDD();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
-        BBDD bbdd = new BBDD();
-        Map<String, Integer> tab = bbdd.tablero();
+       
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ImprimirTablero</title>");            
+            out.println("<title>Servlet LoginBBDD</title>");            
             out.println("</head>");
             out.println("<body>");
-            for (Map.Entry entry : tab.entrySet()) {
-                out.println("<p>"+entry.getKey() + " -------- " + entry.getValue());
-            }
-             out.println("<br><br><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a> <br>");
+            out.println("<h1>Servlet LoginBBDD at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -76,7 +79,19 @@ public class ImprimirTablero extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String usuario = request.getParameter("usuario");
+        String password = request.getParameter("password");
+        
+        if(bbdd.comprobarUsuario(usuario, password)){
+//            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
+            request.getSession().setAttribute("usuario", usuario);
+            request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));
+            response.sendRedirect("/ProyectoAhorcado/Inicio");
+        }else{
+            response.sendRedirect("/ProyectoAhorcado/login.jsp?error=error");
+        }
+    processRequest(request, response);
     }
 
     /**

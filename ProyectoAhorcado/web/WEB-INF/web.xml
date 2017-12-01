@@ -6,15 +6,15 @@
     </context-param>
     <servlet>
         <servlet-name>Juego</servlet-name>
-        <servlet-class>Objetos.Juego</servlet-class>
+        <servlet-class>Servlet.Juego</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CerrarSesion</servlet-name>
-        <servlet-class>Objetos.CerrarSesion</servlet-class>
+        <servlet-class>Servlet.CerrarSesion</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>Objetos.Login</servlet-class>
+        <servlet-class>Servlet.Login</servlet-class>
         <init-param>
             <param-name>FicheroLogin</param-name>
             <param-value>/Recursos/fichero.txt</param-value>
@@ -22,23 +22,23 @@
     </servlet>
     <servlet>
         <servlet-name>BBDD</servlet-name>
-        <servlet-class>Objetos.BBDD</servlet-class>
+        <servlet-class>Servlet.BBDD</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginBBDD</servlet-name>
-        <servlet-class>Objetos.LoginBBDD</servlet-class>
+        <servlet-class>Servlet.LoginBBDD</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Inicio</servlet-name>
-        <servlet-class>Objetos.Inicio</servlet-class>
+        <servlet-class>Servlet.Inicio</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Usuario</servlet-name>
-        <servlet-class>Objetos.Usuario</servlet-class>
+        <servlet-class>Servlet.Usuario</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ImprimirTablero</servlet-name>
-        <servlet-class>Objetos.ImprimirTablero</servlet-class>
+        <servlet-class>Servlet.ImprimirTablero</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
