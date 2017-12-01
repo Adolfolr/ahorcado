@@ -24,6 +24,18 @@
         <servlet-name>BBDD</servlet-name>
         <servlet-class>Objetos.BBDD</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginBBDD</servlet-name>
+        <servlet-class>Objetos.LoginBBDD</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Inicio</servlet-name>
+        <servlet-class>Objetos.Inicio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Usuario</servlet-name>
+        <servlet-class>Objetos.Usuario</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -35,6 +47,18 @@
     <servlet-mapping>
         <servlet-name>BBDD</servlet-name>
         <url-pattern>/BBDD</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginBBDD</servlet-name>
+        <url-pattern>/LoginBBDD</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Inicio</servlet-name>
+        <url-pattern>/Inicio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Usuario</servlet-name>
+        <url-pattern>/Usuario</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

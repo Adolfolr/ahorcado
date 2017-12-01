@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author XKIER
+ * @author rafael
  */
-public class CerrarSesion extends HttpServlet {
+public class Inicio extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,15 +31,15 @@ public class CerrarSesion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().invalidate();
-            response.sendRedirect("/ProyectoAhorcado/login.html");
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CerrarSesion</title>");            
+            out.println("<title>Servlet Inicio</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CerrarSesion at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Bien venido al juego del ahorcado</h1>");
+            out.println("<a href=\"/ProyectoAhorcado/Ahorcado\" name=\"letra\" >Empezar a jugar</a> ");
             out.println("</body>");
             out.println("</html>");
         }
