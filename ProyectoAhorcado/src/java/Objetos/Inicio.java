@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,8 +28,12 @@ public class Inicio extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //Usuario usuario = LoginBBDD.objusuario;
+        HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -38,8 +43,11 @@ public class Inicio extends HttpServlet {
             out.println("<title>Servlet Inicio</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Bien venido al juego del ahorcado</h1>");
-            out.println("<a href=\"/ProyectoAhorcado/Ahorcado\" name=\"letra\" >Empezar a jugar</a> ");
+            out.println("<h1>Bien venido "+ sesion.getAttribute("usuario") +" al juego del ahorcado</h1>");
+            out.println("<a href=\"/ProyectoAhorcado/Ahorcado\" name=\"letra\" >Empezar a jugar</a> <br>");
+            out.println("<a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Añadir jugador (en obras)</a> <br>");
+            out.println("<a href=\"/ProyectoAhorcado/ImprimirTablero\" name=\"letra\" >Tablero de campeones (en obras)</a> <br>");
+            out.println("<a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >¿Como se juega a esto? (para Adolfo)</a> <br>");
             out.println("</body>");
             out.println("</html>");
         }

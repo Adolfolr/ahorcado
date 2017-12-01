@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -49,7 +51,7 @@ public class BBDD extends HttpServlet {
         init();
         try {
             String query = null;
-            query = "select * " + "from usuarios " +"where Nombre like '"+nombre+"' and Password ="+ password;
+            query = "select * " + "from usuarios " +"where Nombre like '"+nombre+"' and Password like '"+ password+"'";
             ResultSet resultSet = null;
             
             connection = datasource.getConnection();
@@ -63,6 +65,27 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
             return false;
+        }
+       
+    }
+    public int puntuacionUsuario(String nombre){
+        init();
+        try {
+            String query = null;
+            query = "select Puntuacion " + "from usuarios " +"where Nombre like '"+nombre+"'";
+            ResultSet resultSet = null;
+            
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                    return Integer.parseInt(resultSet.getString("Puntuacion"));
+                }
+            return 1;
+            
+        } catch (SQLException ex) {
+            System.out.println("No existe el usuario");
+            return 1;
         }
        
     }
@@ -162,7 +185,27 @@ public class BBDD extends HttpServlet {
                 }
           
     }
- 
+ public Map<String, Integer> tablero(){
+     init();
+     Map<String, Integer> tab = new HashMap<String, Integer>();
+        try {
+            String query = null;
+            query = "select Nombre, Puntuacion " + "from usuarios" ;
+            ResultSet resultSet = null;
+            
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                  tab.put(resultSet.getString("Nombre"), Integer.parseInt(resultSet.getString("Puntuacion")));
+                }
+            return tab;
+        } catch (SQLException ex) {
+            System.out.println("No existe el usuario");
+            return tab;
+        }
+       
+ }
     @Override
     public String getServletInfo() {
         return "Short description";

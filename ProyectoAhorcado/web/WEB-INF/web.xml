@@ -36,6 +36,10 @@
         <servlet-name>Usuario</servlet-name>
         <servlet-class>Objetos.Usuario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImprimirTablero</servlet-name>
+        <servlet-class>Objetos.ImprimirTablero</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -59,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>Usuario</servlet-name>
         <url-pattern>/Usuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImprimirTablero</servlet-name>
+        <url-pattern>/ImprimirTablero</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -64,10 +64,7 @@ public class Juego extends HttpServlet {
         //Recogemos la sesion
         HttpSession sesion = request.getSession();
         if (sesion.getAttribute("intentosFallidos") != null) { //Si la sesion existe entonces NO hacemos nada
-            //sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos"));
-            //sesion.setAttribute("listaAciertos", (ArrayList<String>) sesion.getAttribute("listaAciertos"));
-            //ArrayList<Integer> list = (ArrayList<Integer>)request.getSession().getAttribute("list");
-        } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas) 
+                 } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas) 
             sesion.setAttribute("intentosFallidos", 0);
             //ArrayList<String> listaAciertos = new ArrayList<String>();
             ArrayList<String> listaAciertos = new ArrayList<String>();
@@ -90,17 +87,19 @@ public class Juego extends HttpServlet {
             out.println("<body>");
             out.println("<h3> Hola <b>" + sesion.getAttribute("usuario") + "<b> tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + "</h3>");
 
-            if (resultado != -1 && seguimos) { //Si acertamos guardamos la letra acertada
+            if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos")) ) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 sesion.setAttribute("listaAciertos", aux);
-            } else if (seguimos) { //Si fallamos aumenta en 1 en numero de intendos
+            } else if (seguimos &&  noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaFallos")) && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos"))) { //Si fallamos aumenta en 1 en numero de intendos
                 out.print("<p style=\"color:red;\"> NO adivinaste la letra <p>");
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
                 aux.add(letra);
                 sesion.setAttribute("listaFallos", aux);
+            }else if(seguimos){
+                out.println("<h2>Acción no valida!</h2>");
             }
 
             out.println("Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos")));
@@ -146,8 +145,8 @@ public class Juego extends HttpServlet {
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
                 out.println("<h1 style=\"color:red;\">Has perdido </h1>" + "<br>");
-                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion de esta partida es: " + puntuacion + "total puntuación: "+(String)sesion.getAttribute("puntuacion"));
+//                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
+                out.println("Tu puntuacion de esta partida es: " + puntuacion + " total puntuación: "+sesion.getAttribute("puntuacion"));
                 finPartida = true;
                 out.println("<br>");
             }
@@ -171,29 +170,10 @@ public class Juego extends HttpServlet {
             out.println("</html>");
         }
         numeroLetrasPintadas = 0;
-        if (finPartida) {
-        ServletContext servletContext = request.getServletContext();
-//         String file = servletContext.getInitParameter("FicheroLogin");
-//            try {
-//                FileInputStream archivo = new FileInputStream((String)servletContext.getInitParameter("FicheroLogin"));
-//                int longitud = archivo.available();
-//                byte[] datos = new byte[longitud];
-//                archivo.read(datos);
-//                archivo.close();
-//                response.setContentType("application/octet-stream");
-//                response.setHeader("Content-Disposition", "attachment;filename=NOMBRE_ARCHIVO");
-//                ServletOutputStream ouputStream = response.getOutputStream();
-//                ouputStream.write(datos);
-//                ouputStream.flush();
-//                ouputStream.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-
-//         guardarPuntuacion((String)sesion.getAttribute("usuario"), (String)sesion.getAttribute("puntuacion"), puntuacion, (String) serevletcontext.getInitParameter("FicheroLogin"));
+//        if (finPartida) {
 //        ServletContext servletContext = request.getServletContext();
-//        InputStream resourceAsStream = servletContext.getResourceAsStream(nameFile);
-        }
+//
+//        }
 
     }
 
@@ -276,19 +256,14 @@ public class Juego extends HttpServlet {
         }
         return false;
     }
-//    public void guardarPuntuacion(String usuario, String antiguaPuntuacion, float nuevaPuntuacion, String fichero) throws IOException{
-//       
-//       File archivo = new File(fichero);
-//        BufferedWriter bw;
-//        if(archivo.exists()) {
-//            bw = new BufferedWriter(new FileWriter(archivo));
-//            bw.write("El fichero de texto ya estaba creado.");
-//        } else {
-//            bw = new BufferedWriter(new FileWriter(archivo));
-//            bw.write("Acabo de crear el fichero de texto.");
-//        }
-//        bw.close();
-//    }
-//    
+    public boolean noRepetirLetra(String letra, ArrayList<String> a){
+        for(int i = 0; i<a.size();i++){
+            if(a.get(i).equals(letra)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }
