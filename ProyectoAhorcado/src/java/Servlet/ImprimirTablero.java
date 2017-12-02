@@ -7,7 +7,10 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,18 +36,35 @@ public class ImprimirTablero extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         BBDD bbdd = new BBDD();
         Map<String, Integer> tab = bbdd.tablero();
+        bbdd.destroy();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ImprimirTablero</title>");            
+            out.println("<title>Servlet ImprimirTablero</title>");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
             out.println("</head>");
             out.println("<body>");
-            for (Map.Entry entry : tab.entrySet()) {
-                out.println("<p>"+entry.getKey() + " -------- " + entry.getValue());
+            out.println("<div id=\"tabla\">");
+            out.println("<table>\n"
+                    + "  <tr>\n"
+                    + "    <th> Posicion </th>\n"
+                    + "    <th> Nombre </th> \n"
+                    + "    <th> Puntuacion </th>\n"
+                    + "  </tr>\n");
+            int i = 1;
+            for (Map.Entry entry : sortByValue(tab).entrySet()) {
+                out.print("<tr>"
+                        +   "<td>"+i+"</td>"
+                        +   "<td>"+entry.getKey()+"</td>"
+                        +   "<td>"+entry.getValue()+"</td>"
+                        +"</tr>");
+                i++;
             }
-             out.println("<br><br><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a> <br>");
+            out.print("</table>");
+            out.println("</div>");
+            out.println("<br><br><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a> <br>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -89,4 +109,16 @@ public class ImprimirTablero extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+  //Metodo extraido de https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values-java ordena el Map segun el valor
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    return map.entrySet()
+              .stream()
+              .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
+              .collect(Collectors.toMap(
+                Map.Entry::getKey, 
+                Map.Entry::getValue, 
+                (e1, e2) -> e1, 
+                LinkedHashMap::new
+              ));
+}
 }

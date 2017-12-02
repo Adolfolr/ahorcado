@@ -87,8 +87,10 @@ public class LoginBBDD extends HttpServlet {
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);
             request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));
+            bbdd.destroy();
             response.sendRedirect("/ProyectoAhorcado/Inicio");
         }else{
+            bbdd.destroy();
             response.sendRedirect("/ProyectoAhorcado/login.jsp?error=error");
         }
     processRequest(request, response);
