@@ -40,7 +40,7 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
 
         //Palabra que hay que adivinar
-        palabra = "RAFA";
+        palabra = "PATATA";
         String[] botones = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
@@ -80,11 +80,13 @@ public class Juego extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Juego</title>");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
             out.println("<meta charset=\"UTF-8\">");
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
-            out.println("<body>");
-            out.println("<h3> Hola <b>" + sesion.getAttribute("usuario") + "<b> tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + "</h3>");
+            out.println("<body id=\"capa\">");
+            out.println("<p class=\"titulosPA\"><b> Hola " + sesion.getAttribute("usuario") + " tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + " </b></p>");
 
             if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos")) ) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
@@ -116,6 +118,8 @@ public class Juego extends HttpServlet {
             //Primer bucle para ir comparando letra a letra. 
             //Ejemlpo nuestra palabra es "patata" coge la primera letra "p" y la compara con la lista de aciertos, 
             //si la letra "p" esta dentro de la lista dibuja "p", si no esta, entoces dibuja " _ "
+            
+            out.println("<p id=\"palabra\">");
             for (int j = 0; j < posicionLetra.length; j++) {
                 boolean esta = false; //Si la letra esta en la lista TRUE, sino FALSE
                 for (int f = 0; f < aux.size(); f++) {
@@ -129,13 +133,14 @@ public class Juego extends HttpServlet {
                     out.println("_");
                 }
             }
-            out.println("<br>");
-            out.println("<br>");
+            out.println("</p>");
+         
             if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
                 out.println("<h1 style=\"color:green;\">Has ganado</h1><br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                float f = Float.parseFloat((String)sesion.getAttribute("puntuacion"));
+                int numero = (int)sesion.getAttribute("puntuacion");
+                float f = (float)numero;
                 float total = puntuacion + f;
                 out.println("Tu puntuacion de esta partida es: " + puntuacion +" total puntuación: "+total);
                 finPartida = true;
@@ -151,20 +156,32 @@ public class Juego extends HttpServlet {
             }
             out.println("<br>");
             //Pintar botones
+            out.println("<table>");
             for (int b = 0; b < botones.length; b++) {
+                if(b%7==0){
+                    out.print("<tr>");
+                }
                 if (bloquearBoton((ArrayList<String>) sesion.getAttribute("listaAciertos"), (ArrayList<String>) sesion.getAttribute("listaFallos"), botones[b]) || finPartida) {
                     if (finPartida) {
-                        color = "Azure";
+                        color = "orange";
                     }
-                    out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button disabled  style=\"background:" + color + "\">" + botones[b] + "</button></form>");
+                    out.print("<td><form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button disabled  class=\"button1\" style=\"background:" + color + "\">" + botones[b] + "</button></form></td>");
                 } else {
-                    out.print("<form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button >" + botones[b] + "</button></form>");
+                    out.print("<td><form style=\"display:inline;  method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\"> <input type=\"hidden\" value=\"" + botones[b] + "\" name=\"letra\"><button  class=\"button2\">" + botones[b] + "</button></form></td>");
+                }
+                if(b-6%7==0){
+                    out.print("</tr>");
                 }
             }
+            out.println("</table>");
             // out.println("<br>"+ numeroLetrasPintadas + "<br>");
             // out.println(palabra.length()+"<br>");
-
-            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button>Cerrar Sesion</button></form>\n");
+            out.println("<ul class=\"svertical\">");
+            out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Guardar partida</a></li>");
+            out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a></li>");
+            out.println("</ul>");
+            
+            out.println("<br><br><form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button >Cerrar Sesion</button></form>\n");
             out.println("</body>");
             out.println("</html>");
         }

@@ -44,8 +44,9 @@ public class ImprimirTablero extends HttpServlet {
             out.println("<head>");
             out.println("<title>Servlet ImprimirTablero</title>");
             out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
             out.println("</head>");
-            out.println("<body>");
+            out.println("<body id=\"capa\">");
             out.println("<div id=\"tabla\">");
             out.println("<table>\n"
                     + "  <tr>\n"
@@ -62,9 +63,10 @@ public class ImprimirTablero extends HttpServlet {
                         +"</tr>");
                 i++;
             }
-            out.print("</table>");
+            out.println("</table>");
             out.println("</div>");
-            out.println("<br><br><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a> <br>");
+            out.println("<ul class=\"svertical\">");
+            out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a></li></ul> <br>");
             out.println("</body>");
             out.println("</html>");
         }

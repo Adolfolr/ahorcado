@@ -1,21 +1,7 @@
-@font-face {
-font-family: 'HVD Bodedo';
-src: url('./Fuentes/HVD_Bodedo.ttf'); 
-format:("truetype");
-font-style: normal;
-font-weight: normal;
-}
+.button1 {border-radius: 50%;
+        color: white;}
+.button2 {border-radius: 50%;}
 
-@font-face{
-font-family: 'Belwe Cn BT';
-	src: url('./Fuentes/aa733f8c.ttf'); 
-	format:("truetype");
-	font-style: normal;
-	font-weight: normal;
-	font-size: 20pt;
-	color: darkgreen;
-	margin-left: 40px
-}
 
 #capa { position:absolute;
 		margin-left:-500px;
@@ -23,7 +9,7 @@ font-family: 'Belwe Cn BT';
 		top:50%;
 		left:50%;
         width: 1000px;
-        height: 500px;
+        height: 600px;
         background-color:white;
         color: black;
         font-family: 'HVD Bodedo';
@@ -33,79 +19,27 @@ font-family: 'Belwe Cn BT';
         border-width: 20px;
 		
     }
-	
+#palabra {text-align:center;}
+h1 {text-align:center;} 	
 .titulosPA{
 	font-family: 'Belwe Cn BT';
 	src: url('./Fuentes/aa733f8c.ttf'); 
-	format:("truetype");
 	font-style: normal;
 	font-weight: normal;
 	font-size: 20pt;
 	color: darkgreen;
 	margin-left: 40px;
+        text-align:center;
 }
 .titulosEtiqueta{
 	position:relativa;
 	font-family: 'Belwe Cn BT';
 	src: url('./Fuentes/aa733f8c.ttf'); 
-	format:("truetype");
 	font-style: normal;
 	font-weight: normal;
 	font-size: 20pt;
 	color: darkgreen;
 	
-}
-#MAPAPRIMERO{
-	border-style: groove;
-	border-color: darkgreen;
-	border-width: 10px;
-}
-#MAPAS{
-	margin-left: 200px;
-	border-style: groove;
-	border-color: darkgreen;
-	border-width: 10px;
-}
-#tituloymaps{
-	margin-left: 200px;
-	 
-   /* border:1px solid #37629B; */
-}
-
-#esqu{
-	margin-left: 200px;
-}
-
-#snow{
-	margin-left: 250px;
-}
-
-#principio{
-		font-size: 17pt;
-		font-family: 'HVD Bodedo';
-		text-align:center;
-		margin-left:30px;
-		margin-right:30px;
-		
-	}
-#Imgsnow2{
-	float:left;
-	width: 200px; 
-	height: 200px;
-}
-#Imgesqui2{
-	float:right;
-	width: 200px; 
-	height: 200px;
-	/*-webkit-transform: rotate(90deg); /* Safari y Google Chrome */
-	/*-moz-transform: rotate(90deg); /*  Firefox */
-	/*-o-transform: rotate(90deg); /* Opera */
-	/*-ms-transform: rotate(90deg); /* Internet Explorer 9 */
-	/*-moz-transform: scaleX(-1); /* Firefox */
-	-o-transform: scaleX(-1);  /*Opera */
-	-webkit-transform: scaleX(-1); /* Chrome y Safari */
-	transform: scaleX(-1); /* w3org */
-	filter: FlipH; /* Internet Explorer */
 }
 
 .parrafo {
@@ -114,7 +48,7 @@ font-family: 'Belwe Cn BT';
 }
 
 html{ 
-	background: url(../Imagenes/fondo3.jpg) no-repeat center center fixed; 
+	background: url(../Imagenes/fondo.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
@@ -135,7 +69,7 @@ list-style-type: none;
 }
 
 ul.svertical li{
-text-align: right; /* Alineaci�n de los botones right, center, o left */
+text-align: left; /* Alineaci�n de los botones right, center, o left */
 }
 
 ul.svertical li a{
@@ -174,287 +108,8 @@ position: absolute;
 left: 0;
 top: 0;
 border-style: solid; 
-border-width: 70px 0 0 20px;
+border-width: 0 0 0 0;
 border-color: transparent transparent transparent white; /* Cambia el �ltimo valor para definir el color del tri�ngulo */
 
 }
-
-/* TABLA*/
-
-/* debemos dimensionar el �rea donde se mostrar�n */
-#csstabs {
-  height: 370px;
-  position:relative;
-  margin-left: 50px;
-  width: 900px;
-  
-}
-#csstabs2 {
-  height: 370px;
-  position:relative;
-  margin-left: 50px;
-  width: 900px;
-  
-}
-#csstabs div {
-  padding: 10px;
-  -moz-border-radius: 20px;
-  
-
-}
-#csstabs2 div {
-  padding: 10px;
-  -moz-border-radius: 20px;
-  
-
-}
-#csstabs h3 { /* los t�tulos de las pesta�as */
-  font-family: 'Belwe Cn BT';
-  color: white;
-  cursor: pointer;
-  display: block;
-  font-size: 20px;
-  font-weight: normal;
-  height: 25px;
-  line-height: 25px;
-  margin: 0;
-  text-align: center;
-  width: 200px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  border: 20px;
-  border-style:solid;
-  border-width:5px;
-  background-color: #F5950D;
-  
-}
-#csstabs2 h4 { /* los t�tulos de las pesta�as */
-  
-  color: black;
-  cursor: pointer;
-  display: block;
-  font-size: 20px;
-  font-weight: normal;
-  height: 25px;
-  line-height: 25px;
-  margin: 0;
-  text-align: center;
-  width: auto;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  border: 20px;
-  border-style:solid;
-  border-width:5px;
-  background-color:white;
-  
-  
-}
-.tabcontent {  /* el contenido de las pesta�as */
-  display: block;
-  height: auto;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  top: 40px;
-  width: 100%;
-  
-  
-}
-.tabcontent2 {  /* el contenido de las pesta�as (TABLA 5 y 6) */
-  display: block;
-  height: auto;
-  opacity:1;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  top: 400px;
-  width: 500px;
-  
-}
-#csstabs:hover h3, #tabs:focus h3, #tabs:active h3 {
-  z-index: 0;
-}
-#csstabs:hover h4, #tabs:focus h4, #tabs:active h4 {
-  z-index: 0;
-}
-#csstabs:hover .tabcontent, #tabs:focus .tabcontent, #tabs:active .tabcontent {
-  opacity: 0;
-  z-index: 0;
-  top:0px;
-  -moz-transition-property: top;-moz-transition-duration: 2s;
-  -webkit-transition-property: top;-webkit-transition-duration: 2s;
-  -o-transition-property: top;-o-transition-duration: 2s;
-}
-#csstabs:hover .tabcontent2, #tabs:focus .tabcontent2, #tabs:active .tabcontent2 {
-  opacity: 0;
-  z-index: 0;
-  top: 0.1px;
-  -moz-transition-property: top;-moz-transition-duration: 2s;
-  -webkit-transition-property: top;-webkit-transition-duration: 2s;
-  -o-transition-property: top;-o-transition-duration: 2s;
-}
-
- /* las definiciones de cada pesta�a que pueden ser iguales o diferentes */
-/* TABLA 1 LA AVENTURA*/
-#tab1 .tabcontent {
-background-color: #E6EAF3;
-z-index: 2;
-height: 1000px;
-
-}
-#tab1 h3 {
-  left: 0;
-  position: absolute;
-  top: 0;
-}
-#tab1:hover h3, #tab1:focus h3, #tab1:active h3 {
- background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 20;
-  left: 0px;
-  color: darkgreen;
-  -moz-transition-property: left color;-moz-transition-duration: 2s;
-  -webkit-transition-property: left color;-webkit-transition-duration: 2s;
-  -o-transition-property: left color;-o-transition-duration: 2s;
-}
-#tab1:hover .tabcontent, #tab1:focus .tabcontent, #tab1:active .tabcontent {
-  opacity: 1;
-  z-index: 3;
-}
-/* TABLA 2 EL SNOW*/
-#tab2 .tabcontent {
-  background-color: #E6EAF3;
-  opacity: 0;
-  z-index: 1;
-}
-#tab2 h3 {
-  left: 210px;
-  position: absolute;
-  top: 0;
-}
-#tab2:hover h3, #tab2:focus h3, #tab2:active h3 {
-  background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 20;
-    left: 0px;
-  color: darkgreen;
-  -moz-transition-property: left color;-moz-transition-duration: 2s;
-  -webkit-transition-property: left color;-webkit-transition-duration: 2s;
-  -o-transition-property: left color;-o-transition-duration: 2s;
-}
-#tab2:hover .tabcontent, #tab2:focus .tabcontent, #tab2:active .tabcontent {
-  opacity: 1;
-  z-index: 3;
-}
-
-
-/* TABLA 3 EL ESQU�*/
-#tab3 .tabcontent {
-  background-color: #E6EAF3;
-  opacity: 0;
-  z-index: 1;
-}
-#tab3 h3 {
-  left: 420px;
-  position: absolute;
-  top: 0;
-}
-#tab3:hover h3, #tab2:focus h3, #tab2:active h3 {
-  position:absolute;
-  background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 20;
-  left: 0px;
-color: darkgreen;
-  -moz-transition-property: left color;-moz-transition-duration: 2s;
-  -webkit-transition-property: left color;-webkit-transition-duration: 2s;
-  -o-transition-property: left color;-o-transition-duration: 2s;
-}
-#tab3:hover .tabcontent, #tab3:focus .tabcontent, #tab3:active .tabcontent {
-  opacity: 1;
-  z-index: 3;
-}
-
-/* TABLA 4 EL NIVEL*/
-
-#tab4 .tabcontent {
-  background-color: #E6EAF3;
-  opacity: 0;
-  z-index: 1;
-  height: 900px;
-}
-#tab4 h3 {
-  left: 630px;
-  position: absolute;
-  top: 0;
-}
-#tab4:hover h3, #tab4:focus h3, #tab4:active h3 {
-  position:absolute;
-  background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 20;
-  left: 0px;
-color: darkgreen;
-  -moz-transition-property: left color;-moz-transition-duration: 2s;
-  -webkit-transition-property: left color;-webkit-transition-duration: 2s;
-  -o-transition-property: left color;-o-transition-duration: 2s;
-}
-#tab4:hover .tabcontent, #tab4:focus .tabcontent, #tab4:active .tabcontent {
-  opacity: 1;
-  z-index: 3;
-}
-
-/* TABLA 5 DENTRO DE LA TABLA 4 EL NIVEL, SNOW*/
-#tab5 .tabcontent2 {
-background-color: #E6EAF3;
-z-index: 1;
-
-
-}
-#tab5 h4 {
-  left:600px;
-  position: absolute;
-  top: 0;
-  
-}
-#tab5:hover h4, #tab5:focus h4, #tab5:active h4 {
- background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 60;
-  color: darkgreen;
-  -moz-transition-property: color;-moz-transition-duration: 2s;
-  -webkit-transition-property: color;-webkit-transition-duration: 2s;
-  -o-transition-property: color;-o-transition-duration: 2s;
-}
-#tab5:hover .tabcontent2, #tab5:focus .tabcontent2, #tab5:active .tabcontent2 {
-  opacity: 1;
-  z-index: 3;
-}
-
-/* TABLA 6 DENTRO DE LA TABLA 4 EL NIVEL, SNOW*/
-#tab6 .tabcontent2 {
-  background-color: #E6EAF3;
-  z-index: 1;
-  
-}
-#tab6 h4 {
-  left:0px;
-  position: absolute;
-  top: 0;
-}
-#tab6:hover h4, #tab6:focus h4, #tab6:active h4 {
-   background-color: #E6EAF3;
-  color: #565A63;
-  z-index: 60;
-    left: 0px;
-  color: darkgreen;
-  -moz-transition-property: color;-moz-transition-duration: 2s;
-  -webkit-transition-property: color;-webkit-transition-duration: 2s;
-  -o-transition-property: color;-o-transition-duration: 2s;
-}
-#tab6:hover .tabcontent2, #tab6:focus .tabcontent2, #tab6:active .tabcontent2 {
-  opacity: 1;
-  z-index: 3;
 }

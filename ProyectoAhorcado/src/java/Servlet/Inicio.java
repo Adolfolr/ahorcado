@@ -28,10 +28,9 @@ public class Inicio extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         //Usuario usuario = LoginBBDD.objusuario;
         HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
@@ -44,11 +43,12 @@ public class Inicio extends HttpServlet {
             out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
             out.println("</head>");
             out.println("<body id=\"capa\">");
-            out.println("<p class=\"titulosPA\">Bien venido "+ sesion.getAttribute("usuario") +" al juego del ahorcado</p>");
-            out.println("<a class=\"parrafo\" href=\"/ProyectoAhorcado/Ahorcado\" name=\"letra\" >Empezar a jugar</a> <br>");
-            out.println("<a class=\"parrafo\" href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Añadir jugador (en obras)</a> <br>");
-            out.println("<a class=\"parrafo\" href=\"/ProyectoAhorcado/ImprimirTablero\" name=\"letra\" >Tablero de campeones (en obras)</a> <br>");
-            out.println("<a class=\"parrafo\" href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >¿Como se juega a esto? (para Adolfo)</a> <br>");
+            out.println("<p class=\"titulosPA\">Bien venido " + sesion.getAttribute("usuario") + " al juego del ahorcado</p>");
+            out.println("<ul class=\"svertical\">\n"
+                    + "<li><a href=\"/ProyectoAhorcado/Ahorcado\">Empezar a jugar</a></li>\n"
+                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">Añadir jugador (en obras)</a></li>\n"
+                    + "<li><a href=\"/ProyectoAhorcado/ImprimirTablero\">Tablero de campeones</a></li>\n"
+                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">¿Como se juega a esto?</a></li> </ul>");
             out.println("</body>");
             out.println("</html>");
         }
