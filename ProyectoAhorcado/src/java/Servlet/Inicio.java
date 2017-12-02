@@ -44,11 +44,14 @@ public class Inicio extends HttpServlet {
             out.println("</head>");
             out.println("<body id=\"capa\">");
             out.println("<p class=\"titulosPA\">Bien venido " + sesion.getAttribute("usuario") + " al juego del ahorcado</p>");
+            out.println("<img id=\"imagen\" src=\"./Imagenes/ahorcado.png\">");
+            out.println("<img id=\"imagen2\" src=\"./Imagenes/ahorcado2.png\">");
             out.println("<ul class=\"svertical\">\n"
                     + "<li><a href=\"/ProyectoAhorcado/Ahorcado\">Empezar a jugar</a></li>\n"
                     + "<li><a href=\"/ProyectoAhorcado/Inicio\">Añadir jugador (en obras)</a></li>\n"
                     + "<li><a href=\"/ProyectoAhorcado/ImprimirTablero\">Tablero de campeones</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">¿Como se juega a esto?</a></li> </ul>");
+                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">¿Como se juega a esto?</a></li>"
+                    + "<li><a href=\"/ProyectoAhorcado/CerrarSesion\">Adios!</a></li> </ul>");
             out.println("</body>");
             out.println("</html>");
         }

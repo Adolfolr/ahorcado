@@ -43,8 +43,8 @@ public class ImprimirTablero extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet ImprimirTablero</title>");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
             out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
             out.println("</head>");
             out.println("<body id=\"capa\">");
             out.println("<div id=\"tabla\">");

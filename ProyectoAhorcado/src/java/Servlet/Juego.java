@@ -40,7 +40,7 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
 
         //Palabra que hay que adivinar
-        palabra = "PATATA";
+        palabra = "MANTECA";
         String[] botones = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
@@ -51,17 +51,28 @@ public class Juego extends HttpServlet {
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
         boolean finPartida = false;
+        boolean victoria = false;
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
         int resultado = -1;
         boolean seguimos = false;
+        //Si se ha enviado alguna LETRA
         if (letra != null) {
             resultado = palabra.indexOf(letra);
             seguimos = true;
             System.out.println(letra);
         }
-
-        //Recogemos la sesion
+        String respuesta = request.getParameter("respuesta");
         HttpSession sesion = request.getSession();
+        if(respuesta!=null){
+            if(comprobarRespuesta(respuesta)){
+                finPartida = true;
+                victoria = true;
+            }else{
+                sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
+            }
+        }
+        //Recogemos la sesion
+        
         if (sesion.getAttribute("intentosFallidos") != null) { //Si la sesion existe entonces NO hacemos nada
                  } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas) 
             sesion.setAttribute("intentosFallidos", 0);
@@ -80,7 +91,7 @@ public class Juego extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Juego</title>");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
             out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
             out.println("<meta charset=\"UTF-8\">");
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
@@ -103,16 +114,9 @@ public class Juego extends HttpServlet {
                 out.println("<h2>Acción no valida!</h2>");
             }
 
-            out.println("Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos")));
+            out.println("<p class=\"parrafo\">Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos"))+"</p>");
             out.println("<br>");
-            //Formulario para enviar otra letra
-//            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name=\"datos\">\n"
-//                    + "Letra: <input name=\"letra\"><br>\n"
-//                    + "<button>Enviar</button></form>  <form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\">\n"
-//                    + "            <button>Cerrar Sesion</button></form>\n");
-//            out.println("<p>" + letra + " e intento " + sesion.getAttribute("intentosFallidos") + "<p>");
-//            out.println("<p> Numero de aciertos" + ((ArrayList<String>) sesion.getAttribute("listaAciertos")).size() + "<p>");
-            //"Pintar" letras acertadas
+          //"Pintar" letras acertadas
             ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos"); //Cargamos la lista de aciertos
 
             //Primer bucle para ir comparando letra a letra. 
@@ -135,7 +139,7 @@ public class Juego extends HttpServlet {
             }
             out.println("</p>");
          
-            if (ganarpartida((int) sesion.getAttribute("intentosFallidos"))) {
+            if (ganarpartida((int) sesion.getAttribute("intentosFallidos")) || victoria) {
                 out.println("<br>");
                 out.println("<h1 style=\"color:green;\">Has ganado</h1><br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
@@ -174,6 +178,11 @@ public class Juego extends HttpServlet {
                 }
             }
             out.println("</table>");
+            out.println("<br>");
+            out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name = \"usuario\">\n" +
+"                ME LA SE: <input type=\"text\" id=\"fname\" name=\"respuesta\" style=\"text-transform:uppercase;\" onkeyup=\"javascript:this.value=this.value.toUpperCase();\"><br><br>"
+                    + "<input type=\"submit\" value=\"Enviar\">\n" +
+"            </form>");
             // out.println("<br>"+ numeroLetrasPintadas + "<br>");
             // out.println(palabra.length()+"<br>");
             out.println("<ul class=\"svertical\">");
@@ -281,5 +290,9 @@ public class Juego extends HttpServlet {
         return true;
     }
 
-
+public boolean comprobarRespuesta(String resp){
+    if(resp.equals(palabra))return true;
+    return false;
+   
+}
 }
