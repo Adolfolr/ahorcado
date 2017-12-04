@@ -21,11 +21,11 @@
 }
 #capa { position:absolute;
         margin-left:-300px;
-        margin-top:-150px;
+        margin-top:-250px;
         top:50%;
         left:50%;
         width: 500px;
-        height: 300px;
+        height: 450px;
         background-color:white;
         color: black;
         font-family: 'HVD Bodedo';
@@ -33,6 +33,7 @@
         border-style: groove;
         border-color: black;
         border-width: 20px;
+        background-color: #f2f2f2;
 
 }
 #palabra {text-align:center;}

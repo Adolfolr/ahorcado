@@ -11,13 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author rafael
  */
-public class Inicio extends HttpServlet {
+public class CreateUserBBDD extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,28 +29,16 @@ public class Inicio extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        //Usuario usuario = LoginBBDD.objusuario;
-        HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Inicio Ahorcad</title>");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
+            out.println("<title>Servlet CreateUserBBDD</title>");            
             out.println("</head>");
-            out.println("<body id=\"capa\">");
-            out.println("<p class=\"titulosPA\">Bien venido " + sesion.getAttribute("usuario") + " al juego del ahorcado</p>");
-            out.println("<img id=\"imagen\" src=\"./Imagenes/file.png\">");
-            out.println("<img id=\"imagen2\" src=\"./Imagenes/file1.png\">");
-            out.println("<ul class=\"svertical\">\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Ahorcado\">Empezar a jugar</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">Añadir jugador (en obras)</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/ImprimirTablero\">Tablero de campeones</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">¿Como se juega a esto?</a></li>"
-                    + "<li><a href=\"/ProyectoAhorcado/CerrarSesion\">Adios!</a></li> </ul>");
+            out.println("<body>");
+            out.println("<h1>Servlet CreateUserBBDD at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -83,6 +70,24 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String usuario = request.getParameter("usuario");
+        String password = request.getParameter("password");
+        String passwordrep = request.getParameter("passwordrep");
+        System.out.println("---->" + usuario);
+        BBDD bbdd = new BBDD();
+        if(bbdd.existeUsuario(usuario) && password.equals(passwordrep) && !password.isEmpty() && !usuario.isEmpty()){
+            System.out.println("Entro!!!!");
+            bbdd.crearUsuario(usuario, password);
+//            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
+            request.getSession().setAttribute("usuario", usuario);
+            request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));
+            bbdd.destroy();
+            response.sendRedirect("/ProyectoAhorcado/Inicio");
+        }else{
+            bbdd.destroy();
+            response.sendRedirect("/ProyectoAhorcado/create.jsp?error=error");
+        }
+        System.out.println("Llego??");
         processRequest(request, response);
     }
 

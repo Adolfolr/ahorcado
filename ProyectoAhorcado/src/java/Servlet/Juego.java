@@ -40,7 +40,16 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
 
         //Palabra que hay que adivinar
-        palabra = "MANTECA";
+        BBDD bbdd = new BBDD();
+        HttpSession sesion = request.getSession();
+        String siguiente = request.getParameter("siguiente");
+        System.out.println("------------------>"+siguiente);
+        boolean sp = false; 
+        if(siguiente!=null){
+        bbdd.siguientePalabra((String)sesion.getAttribute("usuario"));
+        sp = true;
+        }
+        palabra = bbdd.palabra((String)sesion.getAttribute("usuario"));
         String[] botones = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
@@ -50,6 +59,7 @@ public class Juego extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         //Recogemos la letra que nos envian
         String letra = request.getParameter("letra");
+        
         boolean finPartida = false;
         boolean victoria = false;
         //Saber si la letra esta en la palabra. Si no esta debolvera un -1
@@ -62,7 +72,7 @@ public class Juego extends HttpServlet {
             System.out.println(letra);
         }
         String respuesta = request.getParameter("respuesta");
-        HttpSession sesion = request.getSession();
+        
         if(respuesta!=null){
             if(comprobarRespuesta(respuesta)){
                 finPartida = true;
@@ -83,6 +93,15 @@ public class Juego extends HttpServlet {
             ArrayList<String> listaFallos = new ArrayList<String>();
             sesion.setAttribute("listaFallos", listaFallos);
         }
+        if(sp){
+            sesion.setAttribute("intentosFallidos", 0);
+            //ArrayList<String> listaAciertos = new ArrayList<String>();
+            ArrayList<String> listaAciertos = new ArrayList<String>();
+            sesion.setAttribute("listaAciertos", listaAciertos);
+
+            ArrayList<String> listaFallos = new ArrayList<String>();
+            sesion.setAttribute("listaFallos", listaFallos);
+        }
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -91,14 +110,14 @@ public class Juego extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Juego</title>");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
             out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
+            out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
             out.println("<meta charset=\"UTF-8\">");
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             out.println("</head>");
             out.println("<body id=\"capa\">");
             out.println("<p class=\"titulosPA\"><b> Hola " + sesion.getAttribute("usuario") + " tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + " </b></p>");
-
+            
             if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos")) ) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
@@ -113,6 +132,7 @@ public class Juego extends HttpServlet {
             }else if(seguimos){
                 out.println("<h2>Acción no valida!</h2>");
             }
+            //out.println("<img id=\"vidas\" src=\"./Imagenes/"+(6 - (int) sesion.getAttribute("intentosFallidos"))+".png\">");
 
             out.println("<p class=\"parrafo\">Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos"))+"</p>");
             out.println("<br>");
@@ -138,10 +158,13 @@ public class Juego extends HttpServlet {
                 }
             }
             out.println("</p>");
+
+
          
+
             if (ganarpartida((int) sesion.getAttribute("intentosFallidos")) || victoria) {
                 out.println("<br>");
-                out.println("<h1 style=\"color:green;\">Has ganado</h1><br>");
+                out.println("<h1 style=\"color:green;\">Has ganado la palabra es "+palabra+"</h1><br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 int numero = (int)sesion.getAttribute("puntuacion");
                 float f = (float)numero;
@@ -149,6 +172,10 @@ public class Juego extends HttpServlet {
                 out.println("Tu puntuacion de esta partida es: " + puntuacion +" total puntuación: "+total);
                 finPartida = true;
                 out.println("<br>");
+                out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name = \"siguientep\">\n" +
+"                <input type=\"hidden\" name=\"siguiente\" value=\"si\">"
+                    + "<input type=\"submit\" value=\"Siguiente palabra!\">\n" +
+"            </form>");
             }
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
@@ -189,16 +216,12 @@ public class Juego extends HttpServlet {
             out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Guardar partida</a></li>");
             out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a></li>");
             out.println("</ul>");
-            
             out.println("<br><br><form method=\"post\" action=\"/ProyectoAhorcado/CerrarSesion\" name=\"datos\"> <button >Cerrar Sesion</button></form>\n");
             out.println("</body>");
             out.println("</html>");
         }
         numeroLetrasPintadas = 0;
-//        if (finPartida) {
-//        ServletContext servletContext = request.getServletContext();
-//
-//        }
+         bbdd.destroy();
 
     }
 

@@ -40,6 +40,10 @@
         <servlet-name>ImprimirTablero</servlet-name>
         <servlet-class>Servlet.ImprimirTablero</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateUserBBDD</servlet-name>
+        <servlet-class>Servlet.CreateUserBBDD</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -67,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>ImprimirTablero</servlet-name>
         <url-pattern>/ImprimirTablero</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateUserBBDD</servlet-name>
+        <url-pattern>/CreateUserBBDD</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

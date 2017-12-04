@@ -1,6 +1,7 @@
 .button1 {border-radius: 50%;
           color: white;}
 .button2 {border-radius: 50%;}
+
 input[type=submit] {
     background-color: #4CAF50;
     color: white;
@@ -14,12 +15,10 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: #45a049;
 }
-#imagen{
-    margin-left: 10;
-    width: 500px; 
-    height: 500px;
-    margin-left:-90px;
-    margin-top:0px;
+#vidas{
+width: 60%;
+float: right;
+position: absolute;
 }
 #imagen2{
     width: 700px; 
@@ -45,6 +44,7 @@ input[type=submit]:hover {
         border-style: groove;
         border-color: black;
         border-width: 20px;
+        background-color: #f2f2f2;
 
 }
 #palabra {text-align:center;}
@@ -126,6 +126,7 @@ ul.svertical li a{
     -o-transition: all 0.2s ease-in-out;
     -ms-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
+    
 }
 
 ul.svertical li a:hover{
