@@ -46,6 +46,28 @@ public class BBDD extends HttpServlet {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public Map<String, Integer> tablero(){
+     init();
+     Map<String, Integer> tab = new HashMap<String, Integer>();
+        try {
+            String query = null;
+            query = "select Nombre, Puntuacion " + "from usuarios" ;
+            ResultSet resultSet = null;
+            
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                  tab.put(resultSet.getString("Nombre"), Integer.parseInt(resultSet.getString("Puntuacion")));
+                }
+            return tab;
+        } catch (SQLException ex) {
+            System.out.println("No existe el usuario");
+            return tab;
+        }
+       
+ }
 
    public boolean comprobarUsuario(String nombre, String password){
         init();
@@ -192,48 +214,7 @@ public class BBDD extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nombre = request.getParameter("nombre");
-        int edad;
-        try {
-            edad = Integer.parseInt(request.getParameter("edad"));
-        } catch (NumberFormatException e) {
-            edad = -1;
-        }
-        ServletContext contexto = request.getServletContext();
-        String query = null;
-
-        query = "insert into PERSONAS values('"+ nombre + "'," + edad + ")";
-        Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = datasource.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-
-            request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/BBDD");
-            RequestDispatcher paginaAltas = contexto.getRequestDispatcher("/Ejemplo10/amigoInsertado.jsp");
-            paginaAltas.forward(request, response);
-        } catch (SQLException ex) {
-            gestionarErrorEnConsultaSQL(ex, request, response);
-        } finally {
-
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-
-    }
+       }
 
     private void gestionarErrorEnConsultaSQL(SQLException ex, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
@@ -271,27 +252,7 @@ public class BBDD extends HttpServlet {
                 }
           
     }
- public Map<String, Integer> tablero(){
-     init();
-     Map<String, Integer> tab = new HashMap<String, Integer>();
-        try {
-            String query = null;
-            query = "select Nombre, Puntuacion " + "from usuarios" ;
-            ResultSet resultSet = null;
-            
-            connection = datasource.getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                  tab.put(resultSet.getString("Nombre"), Integer.parseInt(resultSet.getString("Puntuacion")));
-                }
-            return tab;
-        } catch (SQLException ex) {
-            System.out.println("No existe el usuario");
-            return tab;
-        }
-       
- }
+
     @Override
     public String getServletInfo() {
         return "Short description";

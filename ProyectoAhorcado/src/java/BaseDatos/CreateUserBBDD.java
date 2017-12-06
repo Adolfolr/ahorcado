@@ -73,7 +73,7 @@ public class CreateUserBBDD extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
         String passwordrep = request.getParameter("passwordrep");
-        System.out.println("---->" + usuario);
+       
         BBDD bbdd = new BBDD();
         if(bbdd.existeUsuario(usuario) && password.equals(passwordrep) && !password.isEmpty() && !usuario.isEmpty()){
             System.out.println("Entro!!!!");
@@ -87,7 +87,6 @@ public class CreateUserBBDD extends HttpServlet {
             bbdd.destroy();
             response.sendRedirect("/ProyectoAhorcado/create.jsp?error=error");
         }
-        System.out.println("Llego??");
         processRequest(request, response);
     }
 
