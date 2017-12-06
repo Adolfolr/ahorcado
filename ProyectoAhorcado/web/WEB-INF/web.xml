@@ -6,7 +6,7 @@
     </context-param>
     <servlet>
         <servlet-name>Juego</servlet-name>
-        <servlet-class>Servlet.Juego</servlet-class>
+        <servlet-class>Partida.Juego</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CerrarSesion</servlet-name>
@@ -22,11 +22,11 @@
     </servlet>
     <servlet>
         <servlet-name>BBDD</servlet-name>
-        <servlet-class>Servlet.BBDD</servlet-class>
+        <servlet-class>BaseDatos.BBDD</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginBBDD</servlet-name>
-        <servlet-class>Servlet.LoginBBDD</servlet-class>
+        <servlet-class>BaseDatos.LoginBBDD</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Inicio</servlet-name>
@@ -42,7 +42,7 @@
     </servlet>
     <servlet>
         <servlet-name>CreateUserBBDD</servlet-name>
-        <servlet-class>Servlet.CreateUserBBDD</servlet-class>
+        <servlet-class>BaseDatos.CreateUserBBDD</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>

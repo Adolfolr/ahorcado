@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servlet;
+package Partida;
 
+
+import BaseDatos.BBDD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -38,12 +40,13 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         //Palabra que hay que adivinar
         BBDD bbdd = new BBDD();
         HttpSession sesion = request.getSession();
         String siguiente = request.getParameter("siguiente");
-        System.out.println("------------------>"+siguiente);
+        System.out.println("-----a------------->"+siguiente);
         boolean sp = false; 
         if(siguiente!=null){
         bbdd.siguientePalabra((String)sesion.getAttribute("usuario"));
@@ -112,8 +115,9 @@ public class Juego extends HttpServlet {
             out.println("<title>Servlet Juego</title>");
             out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
             out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
-            out.println("<meta charset=\"UTF-8\">");
+           
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+             out.println("<meta charset=\"UTF-8\">");
             out.println("</head>");
             out.println("<body id=\"capa\">");
             out.println("<p class=\"titulosPA\"><b> Hola " + sesion.getAttribute("usuario") + " tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + " </b></p>");
@@ -132,8 +136,7 @@ public class Juego extends HttpServlet {
             }else if(seguimos){
                 out.println("<h2>Acción no valida!</h2>");
             }
-            //out.println("<img id=\"vidas\" src=\"./Imagenes/"+(6 - (int) sesion.getAttribute("intentosFallidos"))+".png\">");
-
+            
             out.println("<p class=\"parrafo\">Vidas restantes: " + (6 - (int) sesion.getAttribute("intentosFallidos"))+"</p>");
             out.println("<br>");
           //"Pintar" letras acertadas
@@ -205,6 +208,8 @@ public class Juego extends HttpServlet {
                 }
             }
             out.println("</table>");
+            out.println("<img id=\"vidas\" src=\"./Imagenes/"+(6 - (int) sesion.getAttribute("intentosFallidos"))+".png\">");
+
             out.println("<br>");
             out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name = \"usuario\">\n" +
 "                ME LA SE: <input type=\"text\" id=\"fname\" name=\"respuesta\" style=\"text-transform:uppercase;\" onkeyup=\"javascript:this.value=this.value.toUpperCase();\"><br><br>"

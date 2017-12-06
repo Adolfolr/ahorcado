@@ -16,9 +16,11 @@ input[type=submit]:hover {
     background-color: #45a049;
 }
 #vidas{
-width: 60%;
-float: right;
+
 position: absolute;
+left: 450px; top: -70px;
+width: 550px; 
+    height: 350px;
 }
 #imagen2{
     width: 700px; 
