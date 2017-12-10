@@ -50,7 +50,7 @@ public class Inicio extends HttpServlet {
             out.println("</head>");
             out.println("<body id=\"capa\">");
             float porcentaje = misesion.getMedia() * 100;
-            out.println("<p class=\"titulosPA\">Bien venido " + misesion.getNombre() + " al juego del ahorcado, tu media es "+porcentaje+"%</p>");
+            out.println("<p class=\"titulosPA\">Bienvenido " + misesion.getNombre() + " al juego del ahorcado, tu media es "+porcentaje+"%</p>");
             out.println("<img id=\"imagen\" src=\"./Imagenes/file.png\">");
             out.println("<img id=\"imagen2\" src=\"./Imagenes/file1.png\">");
             out.println("<ul class=\"svertical\">\n"
