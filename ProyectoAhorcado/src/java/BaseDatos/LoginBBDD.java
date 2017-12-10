@@ -5,12 +5,14 @@
  */
 package BaseDatos;
 
+import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -78,11 +80,14 @@ public class LoginBBDD extends HttpServlet {
         
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
-        
+        HttpSession sesion = request.getSession();
         if(bbdd.comprobarUsuario(usuario, password)){
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);
             request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));
+            Usuario misesion = new Usuario(usuario);
+            request.getSession().setAttribute("misesion", misesion);
+            sesion.setAttribute("registrado", "true");
             bbdd.destroy();
             response.sendRedirect("/ProyectoAhorcado/Inicio");
         }else{

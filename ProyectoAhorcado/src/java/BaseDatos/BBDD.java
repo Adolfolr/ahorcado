@@ -115,7 +115,7 @@ public class BBDD extends HttpServlet {
         init();
         try {
             String query = null;
-            query = "insert into usuarios values(null,'"+ nombre + "','" + password +"', 0, 1 )";
+            query = "insert into usuarios values(null,'"+ nombre + "','" + password +"', 0, 0, 1 )";
            
             
             connection = datasource.getConnection();
@@ -191,6 +191,90 @@ public class BBDD extends HttpServlet {
             statement.executeUpdate(query);
         } catch (SQLException ex) {
             System.out.println("No siguiente palabra");
+            Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        destroy();
+
+    }
+     public void actualizarPuntuacion(String usuario, int nuevaPuntuacion){
+        init();
+        try {
+            System.out.println("ENTROOOOOO");
+            String query = null;
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            query = "update usuarios set Puntuacion = "+nuevaPuntuacion+" where Nombre like '"+usuario+"'";
+            statement.executeUpdate(query);
+        } catch (SQLException ex) {
+            System.out.println("No siguiente palabra");
+            Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        destroy();
+
+    }
+      public float saberMedia(String nombre){
+        init();
+        try {
+            String query = null;
+            query = "select * " + "from usuarios " +"where Nombre like '"+nombre+"'";
+            ResultSet resultSet = null;
+            
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                    return resultSet.getFloat("Media");
+                }
+           return 0;
+            
+        } catch (SQLException ex) {
+            System.out.println("No existe el usuario");
+            return 0;
+        }
+       
+    }
+     public void actualizarMediaParidasGanadas(String usuario, boolean ganado){
+        init();
+        try {
+            int g = 20;
+            int p = 20;
+            String query = null;
+            ResultSet resultSet = null;
+            query="select PartidasG, PartidasP from usuarios where Nombre like '"+usuario+"'";
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+             while (resultSet.next()) {
+                 g = resultSet.getInt("PartidasG");
+                 p = resultSet.getInt("PartidasP");
+                   System.out.println("----------->"+resultSet.getInt("PartidasG")+" per "+p);
+                }
+            
+           if(ganado){
+//                int g = resultSet.getInt("PartidasG");
+                g++;
+                query = "update usuarios set PartidasG = "+g+" where Nombre like '"+usuario+"'";
+            }else{
+//                int p = resultSet.getInt("PartidasG");
+                p++;
+                query = "update usuarios set PartidasP = "+p+" where Nombre like '"+usuario+"'";
+            }
+            statement.executeUpdate(query);
+//            query="select PartidasG,PartidasP from usuarios where Nombre like '"+usuario+"'";
+//            resultSet = statement.executeQuery(query);
+            int numPartidasTotales = g+p;
+//            int g = resultSet.getInt("PartidasG");
+            float media = (float)g / (float)numPartidasTotales;
+            System.out.println("^^^^^^^^^^^^^^^^^^-->"+media + " tot "+numPartidasTotales);
+            query = "update usuarios set Media = "+media+" where Nombre like '"+usuario+"'";
+            statement.executeUpdate(query);
+            destroy();
+            
+            
+        } catch (SQLException ex) {
+            System.out.println("No actulizo Media");
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
         }

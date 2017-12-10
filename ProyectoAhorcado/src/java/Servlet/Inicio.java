@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -34,6 +35,11 @@ public class Inicio extends HttpServlet {
         //Usuario usuario = LoginBBDD.objusuario;
         HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
+        if((String)sesion.getAttribute("registrado")!="true"){ 
+            response.sendRedirect("/ProyectoAhorcado/login.jsp");
+        }else{
+        System.out.println("------------------->"+sesion.getAttribute("registrado"));
+        Usuario misesion = (Usuario)sesion.getAttribute("misesion");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -43,18 +49,20 @@ public class Inicio extends HttpServlet {
             out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
             out.println("</head>");
             out.println("<body id=\"capa\">");
-            out.println("<p class=\"titulosPA\">Bien venido " + sesion.getAttribute("usuario") + " al juego del ahorcado</p>");
+            float porcentaje = misesion.getMedia() * 100;
+            out.println("<p class=\"titulosPA\">Bien venido " + misesion.getNombre() + " al juego del ahorcado, tu media es "+porcentaje+"%</p>");
             out.println("<img id=\"imagen\" src=\"./Imagenes/file.png\">");
             out.println("<img id=\"imagen2\" src=\"./Imagenes/file1.png\">");
             out.println("<ul class=\"svertical\">\n"
                     + "<li><a href=\"/ProyectoAhorcado/Ahorcado\">Empezar a jugar</a></li>\n"
                     + "<li><a href=\"/ProyectoAhorcado/Inicio\">Añadir jugador (en obras)</a></li>\n"
                     + "<li><a href=\"/ProyectoAhorcado/ImprimirTablero\">Tablero de campeones</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">¿Como se juega a esto?</a></li>"
+                    + "<li><a href=\"/ProyectoAhorcado/Tutorial.jsp\">¿Como se juega a esto?</a></li>"
                     + "<li><a href=\"/ProyectoAhorcado/CerrarSesion\">Adios!</a></li> </ul>");
             out.println("</body>");
             out.println("</html>");
         }
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

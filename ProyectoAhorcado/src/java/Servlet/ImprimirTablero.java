@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,6 +35,9 @@ public class ImprimirTablero extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession sesion = request.getSession();
+        if((String)sesion.getAttribute("registrado")!="true") response.sendRedirect("/ProyectoAhorcado/login.jsp");
         response.setContentType("text/html;charset=UTF-8");
         BBDD bbdd = new BBDD();
         Map<String, Integer> tab = bbdd.tablero();

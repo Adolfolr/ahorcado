@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Crear cuenta Ahorcado</title>
-        <LINK REL=StyleSheet HREF="./css/log.css" TITLE=\"Contemporaneo\">
+        <LINK rel=StyleSheet href="./css/log.css">
     </head>
     <body id="capa">
         <div class="container">

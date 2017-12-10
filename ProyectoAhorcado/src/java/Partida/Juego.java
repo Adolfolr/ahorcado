@@ -7,6 +7,7 @@ package Partida;
 
 
 import BaseDatos.BBDD;
+import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class Juego extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //Se recogeran los atributos de sesion
+        HttpSession sesion = request.getSession();
+        if((String)sesion.getAttribute("registrado")!="true"){ 
+            response.sendRedirect("/ProyectoAhorcado/login.jsp");
+        }else{
+        Usuario misesion = (Usuario)sesion.getAttribute("misesion");
+        
 //-------- Para poder recibir nuestra amiga la Ñ ---------------
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -48,19 +57,17 @@ public class Juego extends HttpServlet {
 
 //------------ CONEXION BBD    ---------------------------------
         BBDD bbdd = new BBDD();//Se usara para saber que palabra toca, inseratar puntuacion y guardar
-//Se recogeran los atributos de sesion
-        HttpSession sesion = request.getSession();
 
  //"siguiente" saber si nos piden la siguiente palabra (solo podran pedirnos siguiente palabra si ganamos o perdemos)
         String siguiente = request.getParameter("siguiente");
-        boolean sp = false; // "sp" boolean que se usara para "borrar" el contador de vidas, desbloquear botones...
-
-        if(siguiente!=null){//Condicion de si nos llega la peticion de cambiar palabra 
-        bbdd.siguientePalabra((String)sesion.getAttribute("usuario")); //Sumamos +1 a la columna del usuario de la id de la palabra que le toca
-        sp = true;
-        }
+//        boolean sp = false; // "sp" boolean que se usara para "borrar" el contador de vidas, desbloquear botones...
+//
+//        if(siguiente!=null){//Condicion de si nos llega la peticion de cambiar palabra 
+//        bbdd.siguientePalabra(misesion.getNombre()); //Sumamos +1 a la columna del usuario de la id de la palabra que le toca
+//        sp = true;
+//        }
 //------------------- CARGAMOS PALABRA -------------------------------------
-        palabra = bbdd.palabra((String)sesion.getAttribute("usuario"));
+        palabra = misesion.getPalabra();
        
         //Dividimos la palabra en letras para comprobar con otra lista de acertados y saber su posicion
         String[] posicionLetra = palabra.split("");
@@ -102,15 +109,15 @@ public class Juego extends HttpServlet {
             sesion.setAttribute("listaFallos", listaFallos);
         }
         //Si hemos pedido otra palabra "reseteamos los valores"
-        if(sp){
-            sesion.setAttribute("intentosFallidos", 0);
-            //ArrayList<String> listaAciertos = new ArrayList<String>();
-            ArrayList<String> listaAciertos = new ArrayList<String>();
-            sesion.setAttribute("listaAciertos", listaAciertos);
-
-            ArrayList<String> listaFallos = new ArrayList<String>();
-            sesion.setAttribute("listaFallos", listaFallos);
-        }
+//        if(sp){
+//            sesion.setAttribute("intentosFallidos", 0);
+//            //ArrayList<String> listaAciertos = new ArrayList<String>();
+//            ArrayList<String> listaAciertos = new ArrayList<String>();
+//            sesion.setAttribute("listaAciertos", listaAciertos);
+//
+//            ArrayList<String> listaFallos = new ArrayList<String>();
+//            sesion.setAttribute("listaFallos", listaFallos);
+//        }
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -126,7 +133,7 @@ public class Juego extends HttpServlet {
              out.println("<meta charset=\"UTF-8\">");
             out.println("</head>");
             out.println("<body id=\"capa\">");
-            out.println("<p class=\"titulosPA\"><b> Hola " + sesion.getAttribute("usuario") + " tu mejor puntuacion es de " + sesion.getAttribute("puntuacion") + " </b></p>");
+            out.println("<p class=\"titulosPA\"><b> Hola " + misesion.getNombre() + " tu mejor puntuacion es de " + misesion.getPuntuacion() + " </b></p>");
                 //Acertamos letra                    no hacmos trampa
             if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos")) ) { //Si acertamos guardamos la letra acertada
                 out.print("<p style=\"color:green;\"> Adivinaste la letra <p>");
@@ -180,23 +187,46 @@ public class Juego extends HttpServlet {
                 out.println("<br>");
                 out.println("<h1 style=\"color:green;\">Has ganado la palabra es "+palabra+"</h1><br>");
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                int numero = (int)sesion.getAttribute("puntuacion");
+                int numero = misesion.getPuntuacion();
                 float f = (float)numero;
                 float total = puntuacion + f;
-                out.println("Tu puntuacion de esta partida es: " + puntuacion +" total puntuación: "+total);
+                misesion.setPuntuacion(7);
+                out.println("Tu puntuacion de esta partida es: " + puntuacion +" total puntuación: "+misesion.getPuntuacion());
+                misesion.setMedia(true);
                 finPartida = true;
+                bbdd.siguientePalabra(misesion.getNombre());
                 out.println("<br>");
                 out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name = \"siguientep\">\n" +
 "                <input type=\"hidden\" name=\"siguiente\" value=\"si\">"
                     + "<input type=\"submit\" value=\"Siguiente palabra!\">\n" +
 "            </form>");
+                 sesion.setAttribute("intentosFallidos", 0);
+            //ArrayList<String> listaAciertos = new ArrayList<String>();
+            ArrayList<String> listaAciertos = new ArrayList<String>();
+            sesion.setAttribute("listaAciertos", listaAciertos);
+
+            ArrayList<String> listaFallos = new ArrayList<String>();
+            sesion.setAttribute("listaFallos", listaFallos);
             }
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 out.println("<br>");
                 out.println("<h1 style=\"color:red;\">Has perdido </h1>" + "<br>");
+                misesion.setMedia(false);
 //                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
-                out.println("Tu puntuacion de esta partida es: " + puntuacion + " total puntuación: "+sesion.getAttribute("puntuacion"));
+                out.println("Tu puntuacion de esta partida es: " + puntuacion + " total puntuación: "+ misesion.getPuntuacion());
                 finPartida = true;
+                bbdd.siguientePalabra(misesion.getNombre());
+                  out.println("<form method=\"post\" action=\"/ProyectoAhorcado/Ahorcado\" name = \"siguientep\">\n" +
+"                <input type=\"hidden\" name=\"siguiente\" value=\"si\">"
+                    + "<input type=\"submit\" value=\"Siguiente palabra!\">\n" +
+"            </form>");
+                 sesion.setAttribute("intentosFallidos", 0);
+            //ArrayList<String> listaAciertos = new ArrayList<String>();
+            ArrayList<String> listaAciertos = new ArrayList<String>();
+            sesion.setAttribute("listaAciertos", listaAciertos);
+
+            ArrayList<String> listaFallos = new ArrayList<String>();
+            sesion.setAttribute("listaFallos", listaFallos);
                 out.println("<br>");
             }
             out.println("<br>");
@@ -240,7 +270,7 @@ public class Juego extends HttpServlet {
         }
         numeroLetrasPintadas = 0;
          bbdd.destroy();
-
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -296,7 +326,7 @@ public class Juego extends HttpServlet {
         return false;
     }
 
-    public float calcularPuntuacion(int numeroFallos) {
+    public void calcularPuntuacion(int numeroFallos) {
         //Lo unico que hace es que la puntuacion es el numero de fallos de esa partida, 
         //queda hacer lo de los jugadores y hacer la media de cada jugador
         if (ganarpartida(numeroFallos) || perderpartida(numeroFallos)) {
@@ -304,7 +334,7 @@ public class Juego extends HttpServlet {
         } else {
             puntuacion = 0;
         }
-        return puntuacion;
+        //return puntuacion;
     }
 
     public boolean bloquearBoton(ArrayList<String> aciertos, ArrayList<String> fallos, String nuevaLetra) {

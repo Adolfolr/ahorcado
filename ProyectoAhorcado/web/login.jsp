@@ -24,6 +24,10 @@
                <br>
                 <input type="submit" value="Crear cuenta">
             </form>
+            <form method="post" action="/ProyectoAhorcado/Tutorial.jsp" name = "usuario">
+               <br>
+                <input type="submit" value="Tutorial">
+            </form>
         
         <% String error = request.getParameter("error");
     if (error != null) {
