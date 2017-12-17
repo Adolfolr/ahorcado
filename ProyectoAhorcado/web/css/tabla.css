@@ -8,15 +8,42 @@ and open the template in the editor.
     Author     : rafael
 */
 
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
 th, td {
-    border-bottom: 2px solid #ddd;
-} 
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
 th {
     background-color: #4CAF50;
     color: white;
-} 
-table{
-text-align:center;
-margin:0 auto;
-margin-top:50px;
+}
+#capa { position:absolute;
+        margin-left:-500px;
+        margin-top:-350px;
+        top:50%;
+        left:50%;
+        width: 1000px;
+        height: 1200px;
+        background-color:white;
+        color: black;
+        font-family: 'HVD Bodedo';
+        font-size: 12pt;
+        border-style: groove;
+        border-color: black;
+        border-width: 20px;
+        background-color: #f2f2f2;
+
+}
+html{ 
+    background: url(../Imagenes/fondo.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
 }

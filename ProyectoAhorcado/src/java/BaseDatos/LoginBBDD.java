@@ -29,7 +29,6 @@ public class LoginBBDD extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    BBDD bbdd = new BBDD();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,10 +60,11 @@ public class LoginBBDD extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //Recogemos los parametros del formulario
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
         HttpSession sesion = request.getSession();
+        BBDD bbdd = new BBDD();
         if(bbdd.comprobarUsuario(usuario, password)){
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);

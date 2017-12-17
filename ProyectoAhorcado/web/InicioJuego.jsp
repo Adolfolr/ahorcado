@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Inicio Juego del Ahorcado</title>
+        <title>Tablero de campeones</title>
        <link rel="stylesheet" href="./css/css.css">
     </head>
     <body id="capa">

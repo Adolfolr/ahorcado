@@ -43,29 +43,33 @@ public class Juego extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+          
         HttpSession sesion = request.getSession();
+        //Comprobar que se ha iniciado sesion
         if ((String) sesion.getAttribute("registrado") != "true") {
-            response.sendRedirect("/ProyectoAhorcado/login.jsp");
-        } else {
-            Usuario misesion = (Usuario) sesion.getAttribute("misesion");
-            response.setContentType("text/html;charset=UTF-8");
-            request.setCharacterEncoding("UTF-8");
+            response.sendRedirect("/ProyectoAhorcado/login.jsp"); //Si no se ha iniciado sesion lo "echamos"
+        } else {//Usuario verificado
+            
+            Usuario misesion = (Usuario) sesion.getAttribute("misesion"); //Cargamos el objeto del usuario
             BBDD bbdd = new BBDD();
-            palabra = misesion.getPalabra();
+            palabra = misesion.getPalabra(); //Carga la palabra que le corresponde al usuario por idPalabra
 
-            String[] posicionLetra = palabra.split("");
-            String letra = request.getParameter("letra");
-            boolean finPartida = false; //FINAL DE PARTIDA
+            String[] posicionLetra = palabra.split(""); //Dividimos la palabra en letras
+            String letra = request.getParameter("letra"); //Recogemos la letra
+            
+            boolean finPartida = false; //FINAL DE PARTIDA diciendo letras
             boolean victoria = false; //HEMOS GANADO INTRODICIENDO LA PALABRA DIRECTAMENTE
 
-            //Saber si la letra esta en la palabra. Si no esta debolvera un -1
-            int resultado = -1;
+            
+            int resultado = -1; //Saber si la letra esta en la palabra. Si NO esta debolvera un -1
             boolean seguimos = false; //Si es falso es que hemos hecho alguna accion incorrecta
 
-            if (letra != null) {
+            if (letra != null) { //Si nos han mandado algo
                 resultado = palabra.indexOf(letra); //comprobar si la letra esta en la palabra
                 seguimos = true;
             }
+            //Recogemos una posible respuesta en la caja de texto
             String respuesta = request.getParameter("respuesta");
 
             if (respuesta != null) {//Si nos ha llegado alguna respuesta
@@ -76,7 +80,8 @@ public class Juego extends HttpServlet {
                     sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 }
             }
-            if (sesion.getAttribute("intentosFallidos") != null) { //Si la sesion existe entonces NO hacemos nada
+            if (sesion.getAttribute("intentosFallidos") != null) { //Si la sesion existe entonces cargamos otra vez botones, la palabra, Fin...
+                                                                   //sino se hiciera esto se repetirian por ejemplo los botones
                 sesion.setAttribute("ListaBotones", "");
                 sesion.setAttribute("Palabra", "");
                 sesion.setAttribute("Fin", false);
@@ -85,7 +90,7 @@ public class Juego extends HttpServlet {
 
                 sesion.setAttribute("Siguiente", "");
 
-            } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas) 
+            } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas...) 
                 sesion.setAttribute("intentosFallidos", 0);
                 ArrayList<String> listaAciertos = new ArrayList<String>();
                 sesion.setAttribute("listaAciertos", listaAciertos);
@@ -99,25 +104,29 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("MensajeFinalColor", "");
                 sesion.setAttribute("Siguiente", "");
             }
-            sesion.setAttribute("Nombre", misesion);
+            
+            sesion.setAttribute("Nombre", misesion);//Para "enviar el Nombre al template"
+          
             if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos"))) { //Si acertamos guardamos la letra acertada
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 sesion.setAttribute("listaAciertos", aux);
-            } else if (seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaFallos")) && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos"))) { //Si fallamos aumenta en 1 en numero de intendos
+                
+                //Si fallamos aumenta en 1 en numero de intendos
+            } else if (seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaFallos")) && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos"))) { 
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
                 aux.add(letra);
                 sesion.setAttribute("listaFallos", aux);
             } else if (seguimos) {
-                //Acción no valida!
+                //Acción no valida! ejemplo cargar la pagina F5
             }
-
-            sesion.setAttribute("Vidas", (6 - (int) sesion.getAttribute("intentosFallidos")));
+            
+            sesion.setAttribute("Vidas", (6 - (int) sesion.getAttribute("intentosFallidos")));//Para pintar las vidas
             ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos"); //Cargamos la lista de aciertos
             String pintarPalabra = (String) sesion.getAttribute("Palabra");
             for (int j = 0; j < posicionLetra.length; j++) {
-                boolean esta = false; //Si la letra esta en la lista TRUE, sino FALSE
+                boolean esta = false; //Si la letra está en la lista TRUE, sino FALSE
                 for (int f = 0; f < aux.size(); f++) {
                     if (posicionLetra[j].equals(aux.get(f))) { //Ejemplo "p" igual a ¿"t"? no, y ¿"a"? no y ¿"p"? SI dibujamos "p"  
                         pintarPalabra = pintarPalabra + " " + posicionLetra[j];
@@ -130,19 +139,23 @@ public class Juego extends HttpServlet {
                 }
             }
             sesion.setAttribute("Palabra", pintarPalabra);
-            System.out.println("VICTORIA??------------>" + ganarpartida((int) sesion.getAttribute("intentosFallidos")));
+           // System.out.println("VICTORIA??------------>" + ganarpartida((int) sesion.getAttribute("intentosFallidos")));
+           
+           //SI SE ADIVINA LA PALABRA
             if (ganarpartida((int) sesion.getAttribute("intentosFallidos")) || victoria) {
-                sesion.setAttribute("Fin", true);
-                sesion.setAttribute("MensajeFinal", "Has ganado la palabra era: " + palabra);
-                sesion.setAttribute("MensajeFinalColor", "green");
-                sesion.setAttribute("Siguiente", "Siguiente palabra");
+                sesion.setAttribute("Fin", true); //Para indicar que se puede escribir
+                sesion.setAttribute("MensajeFinal", "Has ganado la palabra era: " + palabra); //MENSAJE DE VICTORIA
+                sesion.setAttribute("MensajeFinalColor", "green"); //Pintarlo en verde
+                sesion.setAttribute("Siguiente", "Siguiente palabra");//Activa un boton con el mensaje "Siguiete palabra"
+                //---------INSERTAR LA NUEVA PUNTUCION
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 int numero = misesion.getPuntuacion();
                 float f = (float) numero;
                 float total = puntuacion + f;
-                misesion.setPuntuacion(7);
+                misesion.setPuntuacion((6 - (int) sesion.getAttribute("intentosFallidos")));
                 misesion.setMedia(true);
                 finPartida = true;
+                //RESETEAMOS VALORES E INICIAMOS CON LA NUEVA PALABRA
                 bbdd.siguientePalabra(misesion.getNombre());
                 sesion.setAttribute("intentosFallidos", 0);
                 ArrayList<String> listaAciertos = new ArrayList<String>();
@@ -152,7 +165,7 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("listaFallos", listaFallos);
                 //Imprimir puntuación
             }
-            System.out.println("DERROTA??------>" + perderpartida((int) sesion.getAttribute("intentosFallidos")));
+           //PERDEMOS
             if (perderpartida((int) sesion.getAttribute("intentosFallidos"))) {
                 sesion.setAttribute("Fin", true);
                 sesion.setAttribute("MensajeFinal", "Has perdido la palabra era: " + palabra);
@@ -171,6 +184,7 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("listaFallos", listaFallos);
             }
 
+            //PINTAR BOTONES COMO UNA TABLA
             String[] botones = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
             String listaBotones = (String) sesion.getAttribute("ListaBotones");
             for (int b = 0; b < botones.length; b++) {

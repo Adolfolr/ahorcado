@@ -47,6 +47,7 @@ public class BBDD extends HttpServlet {
         }
     }
     
+    //Busqueda de la puntuación para el tablero (lo envia SIN ordenar)
      public Map<String, Integer> tablero(){
      init();
      Map<String, Integer> tab = new HashMap<String, Integer>();
@@ -68,7 +69,7 @@ public class BBDD extends HttpServlet {
         }
        
  }
-
+//Se usa para iniciar sesion, saber si la password y nombre son correctos
    public boolean comprobarUsuario(String nombre, String password){
         init();
         try {
@@ -90,6 +91,7 @@ public class BBDD extends HttpServlet {
         }
        
     }
+   //Saber si el "Nombre" ya esta en uso, no puede haber dos jugadores con el mismo nombre
    public boolean existeUsuario(String nombre){
         init();
         try {
@@ -111,6 +113,7 @@ public class BBDD extends HttpServlet {
         }
        
     }
+   //Crear usuario...
    public void crearUsuario(String nombre, String password){
         init();
         try {
@@ -128,6 +131,7 @@ public class BBDD extends HttpServlet {
         }
        
     }
+   //Saber puntuacion usuario
     public int puntuacionUsuario(String nombre){
         init();
         try {
@@ -149,6 +153,7 @@ public class BBDD extends HttpServlet {
         }
        
     }
+    //Saber que palabra le toca al usuario
     public String palabra(String usuario){
         init();
         try {
@@ -171,10 +176,11 @@ public class BBDD extends HttpServlet {
         destroy();
         return "ERROR";
     }
+    //Al ganar o perder se pasa a la siguiente palabra
     public void siguientePalabra(String usuario){
         init();
         try {
-            System.out.println("ENTROOOOOO");
+            //System.out.println("ENTROOOOOO");
             String query = null;
             query = "select idPalabra from palabras where idPalabra in (select idPalabra from usuarios where Nombre like '"+usuario+"')";
             ResultSet resultSet = null;
@@ -198,6 +204,7 @@ public class BBDD extends HttpServlet {
         destroy();
 
     }
+    //Al finalizar se inserta la nueva puntuacion
      public void actualizarPuntuacion(String usuario, int nuevaPuntuacion){
         init();
         try {
@@ -215,6 +222,7 @@ public class BBDD extends HttpServlet {
         destroy();
 
     }
+     //Saber la media de partidas ganadas
       public float saberMedia(String nombre){
         init();
         try {
@@ -236,6 +244,7 @@ public class BBDD extends HttpServlet {
         }
        
     }
+     //Actualizamos la media
      public void actualizarMediaParidasGanadas(String usuario, boolean ganado){
         init();
         try {
@@ -250,7 +259,7 @@ public class BBDD extends HttpServlet {
              while (resultSet.next()) {
                  g = resultSet.getInt("PartidasG");
                  p = resultSet.getInt("PartidasP");
-                   System.out.println("----------->"+resultSet.getInt("PartidasG")+" per "+p);
+              //     System.out.println("----------->"+resultSet.getInt("PartidasG")+" per "+p);
                 }
             
            if(ganado){
@@ -268,7 +277,7 @@ public class BBDD extends HttpServlet {
             int numPartidasTotales = g+p;
 //            int g = resultSet.getInt("PartidasG");
             float media = (float)g / (float)numPartidasTotales;
-            System.out.println("^^^^^^^^^^^^^^^^^^-->"+media + " tot "+numPartidasTotales);
+            //System.out.println("^^^^^^^^^^^^^^^^^^-->"+media + " tot "+numPartidasTotales);
             query = "update usuarios set Media = "+media+" where Nombre like '"+usuario+"'";
             statement.executeUpdate(query);
             destroy();
@@ -301,19 +310,6 @@ public class BBDD extends HttpServlet {
             throws ServletException, IOException {
        }
 
-    private void gestionarErrorEnConsultaSQL(SQLException ex, HttpServletRequest request,
-            HttpServletResponse response) throws IOException, ServletException {
-        ServletContext contexto = request.getServletContext();
-        Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, "No se pudo ejecutar la consulta contra la base de datos", ex);
-        request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/Ejemplo10/crearPersona.html");
-        request.setAttribute("error", ex);
-        request.setAttribute("errorMessage", ex.getMessage());
-        Logger.getLogger(BBDD.class.getName()).log(Level.INFO, "Set " + request.getAttribute("errorMessage"));
-
-        RequestDispatcher paginaError = contexto.getRequestDispatcher("/Ejemplo10/errorSQL.jsp");
-        paginaError.forward(request, response);
-    }
-    
     /**
      * Returns a short description of the servlet.
      *

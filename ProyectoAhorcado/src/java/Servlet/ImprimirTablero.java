@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,45 +36,29 @@ public class ImprimirTablero extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession sesion = request.getSession();
-        if((String)sesion.getAttribute("registrado")!="true") response.sendRedirect("/ProyectoAhorcado/login.jsp");
-        response.setContentType("text/html;charset=UTF-8");
-        BBDD bbdd = new BBDD();
-        Map<String, Integer> tab = bbdd.tablero();
-        bbdd.destroy();
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImprimirTablero</title>");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/juego.css\" TITLE=\"Contemporaneo\">");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/tabla.css\" TITLE=\"Contemporaneo\">");
-            out.println("</head>");
-            out.println("<body id=\"capa\">");
-            out.println("<div id=\"tabla\">");
-            out.println("<table>\n"
-                    + "  <tr>\n"
-                    + "    <th> Posicion </th>\n"
-                    + "    <th> Nombre </th> \n"
-                    + "    <th> Puntuacion </th>\n"
-                    + "  </tr>\n");
-            int i = 1;
+
+        if ((String) sesion.getAttribute("registrado") != "true") {//Saber que hemos iniciado sesion
+            response.sendRedirect("/ProyectoAhorcado/login.jsp");
+        } else {
+            response.setContentType("text/html;charset=UTF-8");
+            //Cargar tabla de campeones de la base de datos
+            BBDD bbdd = new BBDD();
+            Map<String, Integer> tab = bbdd.tablero();
+            bbdd.destroy();
+            
+            int i = 1; //Solo para numerar y quede "precioso"
+            sesion.setAttribute("Tabla", "");
+            //Recorremos los datos de la base de datos y los cargamos ordenado (METODO SACADO DE INTERNET)
             for (Map.Entry entry : sortByValue(tab).entrySet()) {
-                out.print("<tr>"
-                        +   "<td>"+i+"</td>"
-                        +   "<td>"+entry.getKey()+"</td>"
-                        +   "<td>"+entry.getValue()+"</td>"
-                        +"</tr>");
+                String tabla = "<tr><td>" + i + "</td><td>" + entry.getKey() + "</td><td>" + entry.getValue() + "</td></tr>";
+                String tablaCompleta = (String) sesion.getAttribute("Tabla") + tabla; 
+                sesion.setAttribute("Tabla", tablaCompleta); //Carga la tabla en codigo html
                 i++;
             }
-            out.println("</table>");
-            out.println("</div>");
-            out.println("<ul class=\"svertical\">");
-            out.println("<li><a href=\"/ProyectoAhorcado/Inicio\" name=\"letra\" >Volver</a></li></ul> <br>");
-            out.println("</body>");
-            out.println("</html>");
+            RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/Tablero.jsp");
+            paginaImprime.forward(request, response);
         }
     }
 
@@ -116,16 +101,16 @@ public class ImprimirTablero extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-  //Metodo extraido de https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values-java ordena el Map segun el valor
+    //Metodo extraido de https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values-java ordena el Map segun el valor
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-    return map.entrySet()
-              .stream()
-              .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
-              .collect(Collectors.toMap(
-                Map.Entry::getKey, 
-                Map.Entry::getValue, 
-                (e1, e2) -> e1, 
-                LinkedHashMap::new
-              ));
-}
+        return map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+    }
 }

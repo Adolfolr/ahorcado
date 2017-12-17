@@ -59,10 +59,11 @@ public class CreateUserBBDD extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Recogemos los parametros del formulario
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
         String passwordrep = request.getParameter("passwordrep");
-       
+        //Nuevo objeto para comprobar usuario y contraseña
         BBDD bbdd = new BBDD();
         if(bbdd.existeUsuario(usuario) && password.equals(passwordrep) && !password.isEmpty() && !usuario.isEmpty()){
             System.out.println("Entro!!!!");

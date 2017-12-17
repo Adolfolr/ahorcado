@@ -33,17 +33,18 @@ public class Inicio extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //Usuario usuario = LoginBBDD.objusuario;
+        
         HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
-        if((String)sesion.getAttribute("registrado")!="true"){ 
+        if((String)sesion.getAttribute("registrado")!="true"){ //Comprobar que se inicio sesion
             response.sendRedirect("/ProyectoAhorcado/login.jsp");
         }else{
-       Usuario misesion = (Usuario)sesion.getAttribute("misesion");
+            
+       Usuario misesion = (Usuario)sesion.getAttribute("misesion"); //Cargamos el objeto USUARIO
        
-            float porcentaje = misesion.getMedia() * 100;
-            sesion.setAttribute("Porcentaje", porcentaje);
-             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/InicioJuego.jsp");
+            float porcentaje = misesion.getMedia() * 100; //Pedimos su media (la del usuario)
+            sesion.setAttribute("Porcentaje", porcentaje); //Enviamos al template el porcentaje (media de victorias)
+            RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/InicioJuego.jsp"); //Nos vamos al "template"
             paginaImprime.forward(request, response);
 
       }

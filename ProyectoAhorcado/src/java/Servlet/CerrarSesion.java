@@ -33,15 +33,6 @@ public class CerrarSesion extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             request.getSession().invalidate();
             response.sendRedirect("/ProyectoAhorcado/login.jsp");
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CerrarSesion</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CerrarSesion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

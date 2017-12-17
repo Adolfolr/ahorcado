@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="./css/juego.css">
-        <link rel="stylesheet" href="./css/tabla.css">
+        <link rel="stylesheet" href="./css/tablaBotones.css">
     </head>
     <body id="capa">
         <%@include file="menu.html"%>
