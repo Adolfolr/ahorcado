@@ -4,6 +4,10 @@
         <param-name>FicheroLogin</param-name>
         <param-value>/Recursos/fichero.txt</param-value>
     </context-param>
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Juego</servlet-name>
         <servlet-class>Partida.Juego</servlet-class>
@@ -44,6 +48,11 @@
         <servlet-name>CreateUserBBDD</servlet-name>
         <servlet-class>BaseDatos.CreateUserBBDD</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -76,9 +85,16 @@
         <servlet-name>CreateUserBBDD</servlet-name>
         <url-pattern>/CreateUserBBDD</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
 </web-app>

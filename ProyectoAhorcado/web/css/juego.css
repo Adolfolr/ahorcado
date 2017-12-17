@@ -15,12 +15,12 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: #45a049;
 }
-#vidas{
-
+img{
 position: absolute;
-left: 450px; top: -70px;
-width: 550px; 
-    height: 350px;
+left: 350px; top: 400px;
+width: 400px; 
+height: 200px;
+
 }
 #imagen2{
     width: 700px; 

@@ -32,9 +32,9 @@ public class Usuario {
         return p;
     }
 
-    public void setPuntuacion(int puntuacionAntes) {
+    public void setPuntuacion(int puntuacionGanada) {
         int puntuacionAntigua = getPuntuacion();
-        puntuacion = puntuacionAntigua + puntuacionAntes;
+        puntuacion = puntuacionAntigua + puntuacionGanada;
         bbdd.actualizarPuntuacion(nombre,puntuacion);
     }
 

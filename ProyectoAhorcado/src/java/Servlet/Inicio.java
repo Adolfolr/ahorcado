@@ -8,6 +8,7 @@ package Servlet;
 import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,31 +39,14 @@ public class Inicio extends HttpServlet {
         if((String)sesion.getAttribute("registrado")!="true"){ 
             response.sendRedirect("/ProyectoAhorcado/login.jsp");
         }else{
-        System.out.println("------------------->"+sesion.getAttribute("registrado"));
-        Usuario misesion = (Usuario)sesion.getAttribute("misesion");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Inicio Ahorcad</title>");
-            out.print("<LINK REL=StyleSheet HREF=\"./css/css.css\" TITLE=\"Contemporaneo\">");
-            out.println("</head>");
-            out.println("<body id=\"capa\">");
+       Usuario misesion = (Usuario)sesion.getAttribute("misesion");
+       
             float porcentaje = misesion.getMedia() * 100;
-            out.println("<p class=\"titulosPA\">Bienvenido " + misesion.getNombre() + " al juego del ahorcado, tu media es "+porcentaje+"%</p>");
-            out.println("<img id=\"imagen\" src=\"./Imagenes/file.png\">");
-            out.println("<img id=\"imagen2\" src=\"./Imagenes/file1.png\">");
-            out.println("<ul class=\"svertical\">\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Ahorcado\">Empezar a jugar</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Inicio\">Añadir jugador (en obras)</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/ImprimirTablero\">Tablero de campeones</a></li>\n"
-                    + "<li><a href=\"/ProyectoAhorcado/Tutorial.jsp\">¿Como se juega a esto?</a></li>"
-                    + "<li><a href=\"/ProyectoAhorcado/CerrarSesion\">Adios!</a></li> </ul>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+            sesion.setAttribute("Porcentaje", porcentaje);
+             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/InicioJuego.jsp");
+            paginaImprime.forward(request, response);
+
+      }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

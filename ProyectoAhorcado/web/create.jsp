@@ -17,8 +17,8 @@
             <form method="post" action="/ProyectoAhorcado/CreateUserBBDD" name = "usuario">
                 Crear cuenta <br>
                 Usuario: <input type="text" id="fname" name="usuario"><br>
-                Password: <input type="text" name ="password"><br>
-                Repetir password: <input type="text" name ="passwordrep"><br>
+                Password: <input type="password" name ="password"><br>
+                Repetir password: <input type="password" name ="passwordrep"><br>
                 <input type="submit" value="Enviar">
             </form>
             <form method="post" action="/ProyectoAhorcado/login.jsp" name = "usuario">

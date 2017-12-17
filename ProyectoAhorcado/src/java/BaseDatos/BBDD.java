@@ -115,7 +115,7 @@ public class BBDD extends HttpServlet {
         init();
         try {
             String query = null;
-            query = "insert into usuarios values(null,'"+ nombre + "','" + password +"', 0, 0, 1 )";
+            query = "insert into usuarios values(null,'"+ nombre + "','" + password +"',0, 0, 0, 0, 1)";
            
             
             connection = datasource.getConnection();
@@ -123,6 +123,7 @@ public class BBDD extends HttpServlet {
             statement.executeUpdate(query);
             
         } catch (SQLException ex) {
+             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al crear usuario");
         }
        
