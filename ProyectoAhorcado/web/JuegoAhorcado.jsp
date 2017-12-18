@@ -9,24 +9,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Juego del Ahorcado</title>
         <link rel="stylesheet" href="./css/juego.css">
         <link rel="stylesheet" href="./css/tablaBotones.css">
     </head>
     <body id="capa">
         <%@include file="menu.html"%>
         <p class="titulosPA"><b> Hola ${Nombre.getNombre()} tu mejor puntuacion es de ${Nombre.getPuntuacion()} </b></p>
-        <p style="color:${MensajeFinalColor}">${MensajeFinal}</p>
+        <p class="centrar" style="color:${MensajeFinalColor} ;position: absolute; left: 40%; margin-top: 25px">${MensajeFinal}</p>
         <p id="palabra"> ${Palabra} </p>
 
         <table>
             ${ListaBotones}
         </table>
         <form method="post" action="/ProyectoAhorcado/Ahorcado" name = "usuario">
-            ME LA SE: <input type="text" id="fname" name="respuesta" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();"><br><br>
-        <input type="submit" value="Enviar">
+            ME LA SE: <input type="text" id="fname" name="respuesta" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" ><br><br>
+            <input type="submit" value="Enviar" ${Bloquear}>
         </form>
-        <a href='/ProyectoAhorcado/Ahorcado'>${Siguiente}</a>
+        ${Siguiente}
         <img id="vidas" src="./Imagenes/${Vidas}.png">
     </body>
 </html>

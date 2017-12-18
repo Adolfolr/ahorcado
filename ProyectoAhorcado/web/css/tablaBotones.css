@@ -19,3 +19,16 @@ text-align:center;
 margin:0 auto;
 margin-top:50px;
 }
+.link:link, .link:visited {
+    background-color: #977DC5;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+.link:hover, .link:active {
+    background-color: purple;
+}

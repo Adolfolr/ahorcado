@@ -87,7 +87,7 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("Fin", false);
                 sesion.setAttribute("MensajeFinal", "");
                 sesion.setAttribute("MensajeFinalColor", "");
-
+                sesion.setAttribute("Bloquear", "");
                 sesion.setAttribute("Siguiente", "");
 
             } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas...) 
@@ -103,6 +103,7 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("MensajeFinal", "");
                 sesion.setAttribute("MensajeFinalColor", "");
                 sesion.setAttribute("Siguiente", "");
+                sesion.setAttribute("Bloquear", "");
             }
             
             sesion.setAttribute("Nombre", misesion);//Para "enviar el Nombre al template"
@@ -146,7 +147,8 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("Fin", true); //Para indicar que se puede escribir
                 sesion.setAttribute("MensajeFinal", "Has ganado la palabra era: " + palabra); //MENSAJE DE VICTORIA
                 sesion.setAttribute("MensajeFinalColor", "green"); //Pintarlo en verde
-                sesion.setAttribute("Siguiente", "Siguiente palabra");//Activa un boton con el mensaje "Siguiete palabra"
+                sesion.setAttribute("Siguiente", "<a class=\"link\" href='/ProyectoAhorcado/Ahorcado'>Siguiente palabra</a>");//Activa un boton con el mensaje "Siguiete palabra"
+                sesion.setAttribute("Bloquear", "disabled"); //Bloque boton de enviar
                 //---------INSERTAR LA NUEVA PUNTUCION
                 calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 int numero = misesion.getPuntuacion();
@@ -170,8 +172,9 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("Fin", true);
                 sesion.setAttribute("MensajeFinal", "Has perdido la palabra era: " + palabra);
                 sesion.setAttribute("MensajeFinalColor", "red");
-                sesion.setAttribute("Siguiente", "Siguiente palabra");
-                misesion.setMedia(false);
+               sesion.setAttribute("Siguiente", "<a class=\"link\" href='/ProyectoAhorcado/Ahorcado'>Siguiente palabra</a>");//Activa un boton con el mensaje "Siguiete palabra"
+               sesion.setAttribute("Bloquear", "disabled"); //Bloquea el boton de enviar
+               misesion.setMedia(false);
 //                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 finPartida = true;
                 bbdd.siguientePalabra(misesion.getNombre());
