@@ -74,8 +74,11 @@ public class Juego extends HttpServlet {
 
             if (respuesta != null) {//Si nos ha llegado alguna respuesta
                 if (comprobarRespuesta(respuesta)) { //comprobamos si es la correcta, si lo es finalizamos partida y victoria directa
+                    
+                //    misesion.setPuntuacion((6 - (int) sesion.getAttribute("intentosFallidos"))+10);
                     finPartida = true;
                     victoria = true;
+              
                 } else {//Si falla restamos una vida
                     sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 }
