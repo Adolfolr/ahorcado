@@ -1,7 +1,7 @@
 <%-- 
-    Document   : login
-    Created on : 30-nov-2017, 21:45:49
-    Author     : rafael
+    Document   : createError
+    Created on : 28-dic-2017, 17:50:26
+    Author     : Clara
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -25,6 +25,8 @@
                 <br>
                 <input type="submit" value="Iniciar sesion">
             </form>
+            <p style="color:red;"> El usuario ya existe o la contraseña es incorrecta</p>
         </div>
     </body>
 </html>
+

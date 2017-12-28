@@ -27,7 +27,7 @@
             <form method="post" action="/ProyectoAhorcado/Tutorial.jsp" name = "usuario">
                <br>
                 <input type="submit" value="Tutorial">
-            </form>
-      
+            </form>  
+    
     </body>
 </html>

@@ -79,7 +79,8 @@ public class CreateUserBBDD extends HttpServlet {
             response.sendRedirect("/ProyectoAhorcado/Inicio");
         }else{
             bbdd.destroy();
-            response.sendRedirect("/ProyectoAhorcado/create.jsp?error=error");
+            response.sendRedirect("/ProyectoAhorcado/createError.jsp");
+            //response.sendRedirect("/ProyectoAhorcado/create.jsp?error=error");
         }
         processRequest(request, response);
     }
