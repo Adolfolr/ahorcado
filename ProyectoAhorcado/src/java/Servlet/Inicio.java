@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,11 @@ public class Inicio extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    String imagen;
+    @Override
+    public void init() throws ServletException {
+        imagen=this.getInitParameter("Fondo");
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -39,7 +45,16 @@ public class Inicio extends HttpServlet {
         if((String)sesion.getAttribute("registrado")!="true"){ //Comprobar que se inicio sesion
             response.sendRedirect("/ProyectoAhorcado/login.jsp");
         }else{
-            
+//           Cookie[] cookies = request.getCookies();
+//           for (Cookie cookie : cookies) {
+//                    if (cookie.getName().equals("Cookie")){
+//                        sesion.setAttribute("Nombre", cookie.getValue());
+//                    }
+//                        
+//                }
+//           sesion.setAttribute("Nombre", "patata");
+//            
+            sesion.setAttribute("fondo", imagen);
        Usuario misesion = (Usuario)sesion.getAttribute("misesion"); //Cargamos el objeto USUARIO
        
             float porcentaje = misesion.getMedia() * 100; //Pedimos su media (la del usuario)
@@ -48,6 +63,7 @@ public class Inicio extends HttpServlet {
             paginaImprime.forward(request, response);
 
       }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
