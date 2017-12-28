@@ -27,9 +27,8 @@
                <br>
                 <input type="submit" value="Tutorial">
             </form>
-            out.println("<p style=\"color:red;\"> El usuario o contraseña son incorrectos</p>");
-            out.print("<br>");
-            out.print("<br>");
+            <p style="color:red;"> El usuario o contraseña son incorrectos</p>
+            <br>
              </div>
     </body>
 </html>

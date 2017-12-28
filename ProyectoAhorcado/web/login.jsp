@@ -28,19 +28,6 @@
                <br>
                 <input type="submit" value="Tutorial">
             </form>
-    
-            
-       <% String error = request.getParameter("error");
-    if (error != null) { 
-        out.println("<p style=\"color:red;\"> El usuario o contraseña son incorrectos</p>");
-        out.print("<br>");
-        out.print("<br>");
-    }%>
-  
-    
-    
-    
-    
-    
+      
     </body>
 </html>

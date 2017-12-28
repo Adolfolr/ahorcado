@@ -15,7 +15,7 @@
     </head>
     <body id="capa">
         <%@include file="menu.html"%>
-        <p class="titulosPA"><b> Hola ${Nombre.getNombre()} tu mejor puntuacion es de ${Nombre.getPuntuacion()} </b></p>
+        <p class="titulosPA"><b> Hola ${misesion.getNombre()} tu mejor puntuacion es de ${misesion.getPuntuacion()} </b></p>
         <p class="centrar" style="color:${MensajeFinalColor} ;position: absolute; left: 40%; margin-top: 25px">${MensajeFinal}</p>
         <p id="palabra"> ${Palabra} </p>
 
