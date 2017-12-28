@@ -67,8 +67,9 @@ public class LoginBBDD extends HttpServlet {
         HttpSession sesion = request.getSession();
         BBDD bbdd = new BBDD();
         if(bbdd.comprobarUsuario(usuario, password)){
-            //Cookie nombreUsuario = new Cookie("Cookie", usuario);
-            //response.addCookie(nombreUsuario);
+            Cookie nombreUsuario = new Cookie("Cookie", usuario);
+            response.addCookie(nombreUsuario);
+            
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);
             request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));

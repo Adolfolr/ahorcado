@@ -45,17 +45,18 @@ public class Inicio extends HttpServlet {
         if((String)sesion.getAttribute("registrado")!="true"){ //Comprobar que se inicio sesion
             response.sendRedirect("/ProyectoAhorcado/login.jsp");
         }else{
-//           Cookie[] cookies = request.getCookies();
-//           for (Cookie cookie : cookies) {
-//                    if (cookie.getName().equals("Cookie")){
-//                        sesion.setAttribute("Nombre", cookie.getValue());
-//                    }
-//                        
-//                }
-//           sesion.setAttribute("Nombre", "patata");
-//            
+            Cookie [] cookies = request.getCookies();
+            for(int i=0; i<cookies.length; i++)
+                {
+                    Cookie cookieActual = cookies[i];
+                    String identificador = cookieActual.getName();
+                    String valor = cookieActual.getValue();
+                    if(identificador.equals("Cookie")){
+                    sesion.setAttribute("miCookie",valor);
+                    }   
+                }
             sesion.setAttribute("fondo", imagen);
-       Usuario misesion = (Usuario)sesion.getAttribute("misesion"); //Cargamos el objeto USUARIO
+            Usuario misesion = (Usuario)sesion.getAttribute("misesion"); //Cargamos el objeto USUARIO
        
             float porcentaje = misesion.getMedia() * 100; //Pedimos su media (la del usuario)
             sesion.setAttribute("Porcentaje", porcentaje); //Enviamos al template el porcentaje (media de victorias)
