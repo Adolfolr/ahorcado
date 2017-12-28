@@ -87,7 +87,9 @@ public class BBDD extends HttpServlet {
             
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
+              Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+            
         }
        
     }
