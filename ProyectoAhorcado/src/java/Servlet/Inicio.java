@@ -57,7 +57,8 @@ public class Inicio extends HttpServlet {
                 }
             sesion.setAttribute("fondo", imagen);
             Usuario misesion = (Usuario)sesion.getAttribute("misesion"); //Cargamos el objeto USUARIO
-       
+            String nombreJuego = getServletContext().getInitParameter("NombreJuego");
+            sesion.setAttribute("nombreJuego", nombreJuego);
             float porcentaje = misesion.getMedia() * 100; //Pedimos su media (la del usuario)
             sesion.setAttribute("Porcentaje", porcentaje); //Enviamos al template el porcentaje (media de victorias)
             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/InicioJuego.jsp"); //Nos vamos al "template"

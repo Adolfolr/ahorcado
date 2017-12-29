@@ -8,6 +8,10 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <context-param>
+        <param-name>NombreJuego</param-name>
+        <param-value>Ahorcadito</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Juego</servlet-name>
         <servlet-class>Partida.Juego</servlet-class>

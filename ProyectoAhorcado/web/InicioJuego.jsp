@@ -14,7 +14,7 @@
     </head>
     <body id="capa">
         <%@include file="menu.html"%>
-        <p class="titulosPA"><b> Bienvenido ${miCookie} al juego del Ahorcado, tu media es ${Porcentaje}%</b></p>
+        <p class="titulosPA"><b> Bienvenido ${miCookie} al juego del ${nombreJuego}, tu media es ${Porcentaje}%</b></p>
          <img id="imagen" src="./Imagenes/${fondo}">
          <img id="imagen2" src="./Imagenes/file1.png">
           <ul class="svertical">
