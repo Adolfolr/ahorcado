@@ -10,6 +10,8 @@ import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -94,12 +96,14 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("Siguiente", "");
 
             } else {//Si NO existe creamos dos nuevos Atributos (Intentos Fallidos: Numero de intentosFallidos; ListaAciertos: guardamos en una lista las palabras acertadas...) 
-                sesion.setAttribute("intentosFallidos", 0);
-                ArrayList<String> listaAciertos = new ArrayList<String>();
+                
+                String listaA = bbdd.saberListaAciertos(misesion.getNombre());
+                List <String> listaAciertos = new ArrayList<String>(Arrays.asList(listaA.split("")));
                 sesion.setAttribute("listaAciertos", listaAciertos);
-
-                ArrayList<String> listaFallos = new ArrayList<String>();
+                String listaF = bbdd.saberListaFallos(misesion.getNombre());
+                List <String> listaFallos = new ArrayList<String>(Arrays.asList(listaF.split("")));
                 sesion.setAttribute("listaFallos", listaFallos);
+                sesion.setAttribute("intentosFallidos", listaF.split("").length);
                 sesion.setAttribute("Palabra", "");
                 sesion.setAttribute("ListaBotones", "");
                 sesion.setAttribute("Fin", false);
@@ -114,6 +118,8 @@ public class Juego extends HttpServlet {
             if (resultado != -1 && seguimos && noRepetirLetra(letra, (ArrayList<String>) sesion.getAttribute("listaAciertos"))) { //Si acertamos guardamos la letra acertada
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
+                bbdd.guardarPartida(misesion.getNombre(), letra, true);
+                bbdd.destroy();
                 sesion.setAttribute("listaAciertos", aux);
                 
                 //Si fallamos aumenta en 1 en numero de intendos
@@ -121,6 +127,8 @@ public class Juego extends HttpServlet {
                 sesion.setAttribute("intentosFallidos", (int) sesion.getAttribute("intentosFallidos") + 1);
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
                 aux.add(letra);
+                bbdd.guardarPartida(misesion.getNombre(), letra, false);
+                bbdd.destroy();
                 sesion.setAttribute("listaFallos", aux);
             } else if (seguimos) {
                 //Acción no valida! ejemplo cargar la pagina F5
@@ -162,12 +170,15 @@ public class Juego extends HttpServlet {
                 finPartida = true;
                 //RESETEAMOS VALORES E INICIAMOS CON LA NUEVA PALABRA
                 bbdd.siguientePalabra(misesion.getNombre());
+                bbdd.destroy();
                 sesion.setAttribute("intentosFallidos", 0);
                 ArrayList<String> listaAciertos = new ArrayList<String>();
                 sesion.setAttribute("listaAciertos", listaAciertos);
 
                 ArrayList<String> listaFallos = new ArrayList<String>();
                 sesion.setAttribute("listaFallos", listaFallos);
+                bbdd.borrarLista(misesion.getNombre());
+                bbdd.destroy();
                 //Imprimir puntuación
             }
            //PERDEMOS
@@ -181,6 +192,7 @@ public class Juego extends HttpServlet {
 //                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 finPartida = true;
                 bbdd.siguientePalabra(misesion.getNombre());
+                bbdd.destroy();
                 sesion.setAttribute("intentosFallidos", 0);
                 //ArrayList<String> listaAciertos = new ArrayList<String>();
                 ArrayList<String> listaAciertos = new ArrayList<String>();
@@ -188,6 +200,9 @@ public class Juego extends HttpServlet {
 
                 ArrayList<String> listaFallos = new ArrayList<String>();
                 sesion.setAttribute("listaFallos", listaFallos);
+                bbdd.borrarLista(misesion.getNombre());
+                bbdd.destroy();
+               
             }
 
             //PINTAR BOTONES COMO UNA TABLA
