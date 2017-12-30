@@ -8,6 +8,10 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <context-param>
+        <param-name>NombreJuego</param-name>
+        <param-value>Ahorcadito</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Juego</servlet-name>
         <servlet-class>Partida.Juego</servlet-class>
@@ -35,6 +39,10 @@
     <servlet>
         <servlet-name>Inicio</servlet-name>
         <servlet-class>Servlet.Inicio</servlet-class>
+        <init-param>
+            <param-name>Fondo</param-name>
+            <param-value>file.png</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>Usuario</servlet-name>
@@ -68,6 +76,7 @@
     <servlet-mapping>
         <servlet-name>LoginBBDD</servlet-name>
         <url-pattern>/LoginBBDD</url-pattern>
+        
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Inicio</servlet-name>
@@ -101,4 +110,13 @@
         <error-code>404</error-code>
         <location>/Errores/Error404.html</location>
     </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/Errores/Error500.html</location>
+    </error-page>
+    <listener>
+        <listener-class>
+            Listener.Listener
+        </listener-class>
+    </listener>
 </web-app>

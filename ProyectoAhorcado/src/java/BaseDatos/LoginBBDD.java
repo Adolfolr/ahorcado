@@ -9,6 +9,7 @@ import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ public class LoginBBDD extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("/ProyectoAhorcado/Tutorial.jsp");
     }
 
     /**
@@ -66,6 +67,9 @@ public class LoginBBDD extends HttpServlet {
         HttpSession sesion = request.getSession();
         BBDD bbdd = new BBDD();
         if(bbdd.comprobarUsuario(usuario, password)){
+            Cookie nombreUsuario = new Cookie("Cookie", usuario);
+            response.addCookie(nombreUsuario);
+            
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);
             request.getSession().setAttribute("puntuacion", bbdd.puntuacionUsuario(usuario));
@@ -93,3 +97,4 @@ public class LoginBBDD extends HttpServlet {
     }// </editor-fold>
 
 }
+

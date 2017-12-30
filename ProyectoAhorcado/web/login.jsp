@@ -24,7 +24,7 @@
                <br>
                 <input type="submit" value="Crear cuenta">
             </form>
-            <form method="post" action="/ProyectoAhorcado/Tutorial.jsp" name = "usuario">
+            <form method="get" action="/ProyectoAhorcado/LoginBBDD" name = "usuario">
                <br>
                 <input type="submit" value="Tutorial">
             </form>  
