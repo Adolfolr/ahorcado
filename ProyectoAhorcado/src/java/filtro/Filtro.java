@@ -21,6 +21,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
@@ -40,7 +42,16 @@ public class Filtro implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        
+       HttpServletRequest sesion = (HttpServletRequest)request;
+       HttpServletResponse mePiro = (HttpServletResponse)response;
+       
+       if((String)sesion.getSession().getAttribute("registrado")!="true"){
+            mePiro.sendRedirect("/ProyectoAhorcado/loginError.jsp");
+            
+       }
+       else{
+           chain.doFilter(request, response);
+       }
     }
 
     @Override

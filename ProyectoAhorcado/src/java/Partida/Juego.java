@@ -48,11 +48,7 @@ public class Juego extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
           
         HttpSession sesion = request.getSession();
-        //Comprobar que se ha iniciado sesion
-        if ((String) sesion.getAttribute("registrado") != "true") {
-            response.sendRedirect("/ProyectoAhorcado/login.jsp"); //Si no se ha iniciado sesion lo "echamos"
-        } else {//Usuario verificado
-            
+
             Usuario misesion = (Usuario) sesion.getAttribute("misesion"); //Cargamos el objeto del usuario
             BBDD bbdd = new BBDD();
             palabra = misesion.getPalabra(); //Carga la palabra que le corresponde al usuario por idPalabra
@@ -234,7 +230,6 @@ public class Juego extends HttpServlet {
             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/JuegoAhorcado.jsp");
             paginaImprime.forward(request, response);
 
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

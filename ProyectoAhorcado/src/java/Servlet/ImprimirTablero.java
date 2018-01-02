@@ -39,9 +39,6 @@ public class ImprimirTablero extends HttpServlet {
 
         HttpSession sesion = request.getSession();
 
-        if ((String) sesion.getAttribute("registrado") != "true") {//Saber que hemos iniciado sesion
-            response.sendRedirect("/ProyectoAhorcado/login.jsp");
-        } else {
             response.setContentType("text/html;charset=UTF-8");
             //Cargar tabla de campeones de la base de datos
             BBDD bbdd = new BBDD();
@@ -59,7 +56,7 @@ public class ImprimirTablero extends HttpServlet {
             }
             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/Tablero.jsp");
             paginaImprime.forward(request, response);
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

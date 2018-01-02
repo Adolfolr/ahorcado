@@ -42,9 +42,7 @@ public class Inicio extends HttpServlet {
         
         HttpSession sesion = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
-        if((String)sesion.getAttribute("registrado")!="true"){ //Comprobar que se inicio sesion
-            response.sendRedirect("/ProyectoAhorcado/login.jsp");
-        }else{
+        
             Cookie [] cookies = request.getCookies();
             for(int i=0; i<cookies.length; i++)
                 {
@@ -64,7 +62,7 @@ public class Inicio extends HttpServlet {
             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/InicioJuego.jsp"); //Nos vamos al "template"
             paginaImprime.forward(request, response);
 
-      }
+      //}
         
     }
 

@@ -80,7 +80,8 @@ public class LoginBBDD extends HttpServlet {
             response.sendRedirect("/ProyectoAhorcado/Inicio");
         }else{
             bbdd.destroy();
-            response.sendRedirect("/ProyectoAhorcado/loginError.jsp");
+            response.sendRedirect("/ProyectoAhorcado/Inicio");
+           // response.sendRedirect("/ProyectoAhorcado/loginError.jsp");
             
         }
     processRequest(request, response);

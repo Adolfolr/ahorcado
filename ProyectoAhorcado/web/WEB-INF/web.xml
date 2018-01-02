@@ -120,6 +120,7 @@
         </listener-class>
     </listener>
     
+
     <filter>
         <filter-name>Filtro</filter-name>
         <filter-class>filtro.Filtro</filter-class>
@@ -127,6 +128,16 @@
     <filter-mapping>
         <filter-name>Filtro</filter-name>
         <url-pattern>/Inicio</url-pattern>
-    </filter-mapping>   
+    </filter-mapping>  
+    <filter-mapping>
+        <filter-name>Filtro</filter-name>
+        <url-pattern>/Juego</url-pattern>
+    </filter-mapping>  
+    <filter-mapping>
+        <filter-name>Filtro</filter-name>
+        <url-pattern>/ImprimirTablero</url-pattern>
+    </filter-mapping>  
+    
+    
         
 </web-app>
