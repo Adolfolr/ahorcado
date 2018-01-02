@@ -9,6 +9,7 @@ import Objetos.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,7 +67,8 @@ public class CreateUserBBDD extends HttpServlet {
         //Nuevo objeto para comprobar usuario y contraseña
         BBDD bbdd = new BBDD();
         if(bbdd.existeUsuario(usuario) && password.equals(passwordrep) && !password.isEmpty() && !usuario.isEmpty()){
-            System.out.println("Entro!!!!");
+            Cookie nombreUsuario = new Cookie("Cookie", usuario);
+            response.addCookie(nombreUsuario);
             bbdd.crearUsuario(usuario, password);
 //            objusuario = new Usuario(usuario, bbdd.puntuacionUsuario(usuario));
             request.getSession().setAttribute("usuario", usuario);
