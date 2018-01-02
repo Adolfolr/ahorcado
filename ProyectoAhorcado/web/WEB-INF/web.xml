@@ -119,4 +119,14 @@
             Listener.Listener
         </listener-class>
     </listener>
+    
+    <filter>
+        <filter-name>Filtro</filter-name>
+        <filter-class>filtro.Filtro</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Filtro</filter-name>
+        <url-pattern>/Inicio</url-pattern>
+    </filter-mapping>   
+        
 </web-app>
