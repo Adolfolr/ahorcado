@@ -61,6 +61,10 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>Ayudanos</servlet-name>
+        <servlet-class>Servlet.Ayudanos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Juego</servlet-name>
         <url-pattern>/Ahorcado</url-pattern>
@@ -76,7 +80,6 @@
     <servlet-mapping>
         <servlet-name>LoginBBDD</servlet-name>
         <url-pattern>/LoginBBDD</url-pattern>
-        
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Inicio</servlet-name>
@@ -97,6 +100,10 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Ayudanos</servlet-name>
+        <url-pattern>/Ayudanos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -119,8 +126,6 @@
             Listener.Listener
         </listener-class>
     </listener>
-    
-
     <filter>
         <filter-name>Filtro</filter-name>
         <filter-class>filtro.Filtro</filter-class>
@@ -128,16 +133,17 @@
     <filter-mapping>
         <filter-name>Filtro</filter-name>
         <url-pattern>/Inicio</url-pattern>
-    </filter-mapping>  
+    </filter-mapping>
     <filter-mapping>
         <filter-name>Filtro</filter-name>
         <url-pattern>/Juego</url-pattern>
-    </filter-mapping>  
+    </filter-mapping>
     <filter-mapping>
         <filter-name>Filtro</filter-name>
         <url-pattern>/ImprimirTablero</url-pattern>
-    </filter-mapping>  
-    
-    
-        
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Filtro</filter-name>
+        <url-pattern>/Ayudanos</url-pattern>
+    </filter-mapping>
 </web-app>

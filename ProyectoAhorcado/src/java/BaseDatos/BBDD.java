@@ -299,6 +299,42 @@ public class BBDD extends HttpServlet {
         destroy();
 
     }
+     public boolean existeYaPalabra(String nuevaPalabra) {
+         init();
+        try {
+            String query = null;
+            query = "select palabra " + "from palabras " + "where palabra like '" + nuevaPalabra + "'";
+            ResultSet resultSet = null;
+
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                return false; //exite
+            }
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error al buscar palabra");
+            return false;
+        }
+    }
+     public void insertarPalabra(String nuevaPalabra,String usuario) {
+         init();
+        try {
+            String query = null;
+            query = "insert into palabras values(null,'" + nuevaPalabra + "','" + usuario +"')";
+
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error al crear palabra");
+        }
+        destroy();
+     }
 
     public void guardarPartida(String usuario, String letra, boolean listaAciertos) {
         init();
@@ -422,5 +458,9 @@ public class BBDD extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
+
+   
 
 }

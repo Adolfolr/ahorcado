@@ -19,7 +19,7 @@
          <img id="imagen2" src="./Imagenes/file1.png">
           <ul class="svertical">
             <li><a href="/ProyectoAhorcado/Ahorcado">Empezar a jugar</a></li>
-                    <li><a href="/ProyectoAhorcado/Inicio">Añadir jugador (en obras)</a></li>
+                    <li><a href="/ProyectoAhorcado/Ayudanos">Ayudanos</a></li>
                     <li><a href="/ProyectoAhorcado/ImprimirTablero">Tablero de campeones</a></li>
                     <li><a href="/ProyectoAhorcado/Tutorial.jsp">¿Como se juega a esto?</a></li>
                     <li><a href="/ProyectoAhorcado/CerrarSesion">Adios!</a></li> </ul> 
