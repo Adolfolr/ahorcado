@@ -99,7 +99,7 @@ public class Juego extends HttpServlet {
                 String listaF = bbdd.saberListaFallos(misesion.getNombre());
                 List <String> listaFallos = new ArrayList<String>(Arrays.asList(listaF.split("")));
                 sesion.setAttribute("listaFallos", listaFallos);
-                sesion.setAttribute("intentosFallidos", listaF.split("").length);
+                sesion.setAttribute("intentosFallidos", listaF.split("").length - 1);
                 sesion.setAttribute("Palabra", "");
                 sesion.setAttribute("ListaBotones", "");
                 sesion.setAttribute("Fin", false);

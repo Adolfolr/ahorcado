@@ -10,10 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Ahorcado</title>
-        <LINK REL=StyleSheet HREF="./css/log.css" TITLE=\"Contemporaneo\">
+        <LINK REL=StyleSheet HREF="./css/log.css">
     </head>
     <body id="capa">
-        
+         <div class="container">
             <form method="post" action="/ProyectoAhorcado/LoginBBDD" name = "usuario">
                 Iniciar Sesion <br>
                 Usuario: <input type="text" id="fname" name="usuario"><br>
@@ -28,6 +28,6 @@
                <br>
                 <input type="submit" value="Tutorial">
             </form>  
-    
+             </div>
     </body>
 </html>
