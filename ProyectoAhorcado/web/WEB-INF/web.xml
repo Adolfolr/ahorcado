@@ -128,7 +128,7 @@
     </listener>
     <filter>
         <filter-name>Filtro</filter-name>
-        <filter-class>filtro.Filtro</filter-class>
+        <filter-class>filtro.FiltroLogin</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Filtro</filter-name>
@@ -146,4 +146,14 @@
         <filter-name>Filtro</filter-name>
         <url-pattern>/Ayudanos</url-pattern>
     </filter-mapping>
+    
+    <filter>
+        <filter-name>FiltroAyuda</filter-name>
+        <filter-class>filtro.FiltroAyuda</filter-class>
+    </filter>
+     <filter-mapping>
+        <filter-name>FiltroAyuda</filter-name>
+        <url-pattern>/Ayudanos</url-pattern>
+    </filter-mapping>
+    
 </web-app>

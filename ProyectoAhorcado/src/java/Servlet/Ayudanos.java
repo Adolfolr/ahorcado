@@ -36,8 +36,7 @@ public class Ayudanos extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession sesion = request.getSession();
         String nuevaPalabra = request.getParameter("nuevaPalabra");
-        BBDD bbdd = new BBDD();                                                     //pan                    //electroencefalografista
-        if (nuevaPalabra != null && nuevaPalabra.matches("^[A-ZÑ]+") && nuevaPalabra.length() > 2 && nuevaPalabra.length() < 24) {
+        BBDD bbdd = new BBDD();                                                                       
             System.out.println("Palabra válida");
             if (bbdd.existeYaPalabra(nuevaPalabra)) {
                 String nombre = (String) sesion.getAttribute("miCookie");
@@ -47,12 +46,6 @@ public class Ayudanos extends HttpServlet {
             } else {
                 sesion.setAttribute("MensajePalabra", "Palabra ya existe, muchas gracias");
             }
-        } else {
-            if(nuevaPalabra!=null){
-            sesion.setAttribute("MensajePalabra", "La palabra no cumple los requisitos (No espacios, no numeros, no simbolos...)");
-            System.out.println("No validaaaaaaaa ------->" + nuevaPalabra);
-            }
-        }
         RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/Ayudanos.jsp"); //Nos vamos al "template"
         paginaImprime.forward(request, response);
     }

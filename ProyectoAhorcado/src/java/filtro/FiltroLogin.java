@@ -30,7 +30,7 @@ import javax.sql.DataSource;
  *
  * @author Clara
  */
-public class Filtro implements Filter{
+public class FiltroLogin implements Filter{
     DataSource datasource;
     Statement statement = null;
     Connection connection = null;
@@ -47,8 +47,8 @@ public class Filtro implements Filter{
        
        if((String)sesion.getSession().getAttribute("registrado")!="true"){
             mePiro.sendRedirect("/ProyectoAhorcado/loginError.jsp");
-            
        }
+       
        else{
            chain.doFilter(request, response);
        }
