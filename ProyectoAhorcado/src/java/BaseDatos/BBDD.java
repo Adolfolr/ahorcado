@@ -356,6 +356,11 @@ public class BBDD extends HttpServlet {
     public void guardarPartida(String usuario, String letra, boolean listaAciertos) {
         init();
         try {
+            
+            System.out.println("Nombre--->"+usuario);
+            System.out.println("Letra--->"+letra);
+            System.out.println("Acierto--->"+listaAciertos);
+
             String query = null;
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -393,9 +398,7 @@ public class BBDD extends HttpServlet {
 
         } catch (SQLException ex) {
             return null;
-        }finally {
-        destroy();
-    }
+        }
     }
      public String saberListaFallos(String usuario){
         init();
@@ -414,9 +417,7 @@ public class BBDD extends HttpServlet {
 
         } catch (SQLException ex) {
             return null;
-        }finally {
-        destroy();
-    }    
+        }
      }
      public void borrarLista(String usuario){
           init();
