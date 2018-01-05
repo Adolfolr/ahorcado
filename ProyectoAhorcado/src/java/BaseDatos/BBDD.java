@@ -364,6 +364,7 @@ public class BBDD extends HttpServlet {
             lista = saberListaAciertos(usuario)+letra;
             query = "update usuarios set ListaAciertos = '" + lista + "' where Nombre like '" + usuario + "'";
             }else{
+            System.err.println("LETRA FALLIDA");
             lista = saberListaFallos(usuario)+letra;
             query = "update usuarios set ListaFallos = '" + lista + "' where Nombre like '" + usuario + "'";
             }
@@ -392,7 +393,9 @@ public class BBDD extends HttpServlet {
 
         } catch (SQLException ex) {
             return null;
-        }
+        }finally {
+        destroy();
+    }
     }
      public String saberListaFallos(String usuario){
         init();
@@ -413,8 +416,8 @@ public class BBDD extends HttpServlet {
             return null;
         }finally {
         destroy();
-    }
-    }
+    }    
+     }
      public void borrarLista(String usuario){
           init();
         try {
