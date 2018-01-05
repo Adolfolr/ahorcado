@@ -115,7 +115,6 @@ public class Juego extends HttpServlet {
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaAciertos");
                 aux.add(letra);
                 bbdd.guardarPartida(misesion.getNombre(), letra, true);
-                bbdd.destroy();
                 sesion.setAttribute("listaAciertos", aux);
                 
                 //Si fallamos aumenta en 1 en numero de intendos
@@ -124,7 +123,6 @@ public class Juego extends HttpServlet {
                 ArrayList<String> aux = (ArrayList<String>) sesion.getAttribute("listaFallos");
                 aux.add(letra);
                 bbdd.guardarPartida(misesion.getNombre(), letra, false);
-                bbdd.destroy();
                 sesion.setAttribute("listaFallos", aux);
             } else if (seguimos) {
                 //Acción no valida! ejemplo cargar la pagina F5
@@ -166,7 +164,6 @@ public class Juego extends HttpServlet {
                 finPartida = true;
                 //RESETEAMOS VALORES E INICIAMOS CON LA NUEVA PALABRA
                 bbdd.siguientePalabra(misesion.getNombre());
-                bbdd.destroy();
                 sesion.setAttribute("intentosFallidos", 0);
                 ArrayList<String> listaAciertos = new ArrayList<String>();
                 sesion.setAttribute("listaAciertos", listaAciertos);
@@ -174,7 +171,6 @@ public class Juego extends HttpServlet {
                 ArrayList<String> listaFallos = new ArrayList<String>();
                 sesion.setAttribute("listaFallos", listaFallos);
                 bbdd.borrarLista(misesion.getNombre());
-                bbdd.destroy();
                 //Imprimir puntuación
             }
            //PERDEMOS
@@ -188,7 +184,6 @@ public class Juego extends HttpServlet {
 //                calcularPuntuacion((int) sesion.getAttribute("intentosFallidos"));
                 finPartida = true;
                 bbdd.siguientePalabra(misesion.getNombre());
-                bbdd.destroy();
                 sesion.setAttribute("intentosFallidos", 0);
                 //ArrayList<String> listaAciertos = new ArrayList<String>();
                 ArrayList<String> listaAciertos = new ArrayList<String>();
@@ -197,7 +192,6 @@ public class Juego extends HttpServlet {
                 ArrayList<String> listaFallos = new ArrayList<String>();
                 sesion.setAttribute("listaFallos", listaFallos);
                 bbdd.borrarLista(misesion.getNombre());
-                bbdd.destroy();
                
             }
 
@@ -226,7 +220,6 @@ public class Juego extends HttpServlet {
             }
             //   System.out.println(listaBotones);
             numeroLetrasPintadas = 0;
-            bbdd.destroy();
             RequestDispatcher paginaImprime = this.getServletContext().getRequestDispatcher("/JuegoAhorcado.jsp");
             paginaImprime.forward(request, response);
 

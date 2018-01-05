@@ -36,6 +36,7 @@ public class BBDD extends HttpServlet {
     DataSource datasource;
     Statement statement = null;
     Connection connection = null;
+    ResultSet resultSet = null;
 
     @Override
     public void init() {
@@ -54,8 +55,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select Nombre, Puntuacion " + "from usuarios";
-            ResultSet resultSet = null;
-
+            
             connection = datasource.getConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
@@ -66,7 +66,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
             return tab;
-        }
+        }finally {
+           destroy();
+    }
 
     }
 //Se usa para iniciar sesion, saber si la password y nombre son correctos
@@ -76,7 +78,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select * " + "from usuarios " + "where Nombre like '" + nombre + "' and Password like '" + password + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -91,7 +93,9 @@ public class BBDD extends HttpServlet {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             return false;
 
-        }
+        }finally {
+        destroy();
+    }
 
     }
     //Saber si el "Nombre" ya esta en uso, no puede haber dos jugadores con el mismo nombre
@@ -101,7 +105,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select Nombre " + "from usuarios " + "where Nombre like '" + nombre + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -114,7 +118,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
             return false;
-        }
+        }finally {
+        destroy();
+    }
 
     }
     //Crear usuario...
@@ -132,7 +138,10 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al crear usuario");
-        }
+        }finally {
+        destroy();
+    }
+        
 
     }
     //Saber puntuacion usuario
@@ -142,7 +151,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select Puntuacion " + "from usuarios " + "where Nombre like '" + nombre + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -155,7 +164,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
             return 1;
-        }
+        }finally {
+        destroy();
+    }
 
     }
 
@@ -165,7 +176,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select palabra from palabras where idPalabra in (select idPalabra from usuarios where Nombre like '" + usuario + "')";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -177,8 +188,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
 
-        }
+        }finally {
         destroy();
+    }
         return "ERROR";
     }
 
@@ -189,7 +201,7 @@ public class BBDD extends HttpServlet {
             //System.out.println("ENTROOOOOO");
             String query = null;
             query = "select idPalabra from palabras where idPalabra in (select idPalabra from usuarios where Nombre like '" + usuario + "')";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -206,9 +218,9 @@ public class BBDD extends HttpServlet {
             System.out.println("No siguiente palabra");
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        }finally {
         destroy();
-
+    }
     }
 
     //Al finalizar se inserta la nueva puntuacion
@@ -225,9 +237,9 @@ public class BBDD extends HttpServlet {
             System.out.println("No siguiente palabra");
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        }finally {
         destroy();
-
+    }
     }
     //Saber la media de partidas ganadas
 
@@ -236,7 +248,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select * " + "from usuarios " + "where Nombre like '" + nombre + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -249,7 +261,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("No existe el usuario");
             return 0;
-        }
+        }finally {
+        destroy();
+    }
 
     }
     //Actualizamos la media
@@ -260,7 +274,7 @@ public class BBDD extends HttpServlet {
             int g = 20;
             int p = 20;
             String query = null;
-            ResultSet resultSet = null;
+            
             query = "select PartidasG, PartidasP from usuarios where Nombre like '" + usuario + "'";
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -289,22 +303,22 @@ public class BBDD extends HttpServlet {
             //System.out.println("^^^^^^^^^^^^^^^^^^-->"+media + " tot "+numPartidasTotales);
             query = "update usuarios set Media = " + media + " where Nombre like '" + usuario + "'";
             statement.executeUpdate(query);
-            destroy();
+            
 
         } catch (SQLException ex) {
             System.out.println("No actulizo Media");
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        }finally {
         destroy();
-
+    }
     }
      public boolean existeYaPalabra(String nuevaPalabra) {
          init();
         try {
             String query = null;
             query = "select palabra " + "from palabras " + "where palabra like '" + nuevaPalabra + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -317,7 +331,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("Error al buscar palabra");
             return false;
-        }
+        }finally {
+        destroy();
+    }
     }
      public void insertarPalabra(String nuevaPalabra,String usuario) {
          init();
@@ -332,8 +348,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al crear palabra");
-        }
+        }finally {
         destroy();
+    }
      }
 
     public void guardarPartida(String usuario, String letra, boolean listaAciertos) {
@@ -354,15 +371,16 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        }finally {
         destroy();
+    }
     }
     public String saberListaAciertos(String usuario){
         init();
         try {
             String query = null;
             query = "select * " + "from usuarios " + "where Nombre like '" + usuario + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -381,7 +399,7 @@ public class BBDD extends HttpServlet {
         try {
             String query = null;
             query = "select * " + "from usuarios " + "where Nombre like '" + usuario + "'";
-            ResultSet resultSet = null;
+            
 
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -393,7 +411,9 @@ public class BBDD extends HttpServlet {
 
         } catch (SQLException ex) {
             return null;
-        }
+        }finally {
+        destroy();
+    }
     }
      public void borrarLista(String usuario){
           init();
@@ -408,8 +428,9 @@ public class BBDD extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        }finally {
         destroy();
+    }
      }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -447,6 +468,13 @@ public class BBDD extends HttpServlet {
         if (connection != null) {
             try {
                 connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+         if (resultSet != null) {
+            try {
+                resultSet.close();
             } catch (SQLException ex) {
                 Logger.getLogger(BBDD.class.getName()).log(Level.SEVERE, null, ex);
             }
