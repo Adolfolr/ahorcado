@@ -1,8 +1,3 @@
-<%-- 
-    Document   : Tablero
-    Created on : 17-dic-2017, 21:03:39
-    Author     : rafael
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

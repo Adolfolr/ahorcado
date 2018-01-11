@@ -15,10 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author rafael
- */
 public class Ayudanos extends HttpServlet {
 
     /**

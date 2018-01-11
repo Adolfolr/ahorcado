@@ -1,8 +1,4 @@
-<%-- 
-    Document   : loginError
-    Created on : 27-dic-2017, 23:46:27
-    Author     : Clara
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

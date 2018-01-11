@@ -9,10 +9,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-/**
- *
- * @author Clara
- */
 public class Listener implements HttpSessionListener{
 
     @Override

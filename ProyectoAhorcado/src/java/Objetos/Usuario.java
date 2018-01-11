@@ -7,10 +7,6 @@ package Objetos;
 
 import BaseDatos.BBDD;
 
-/**
- *
- * @author rafael
- */
 public class Usuario {
     String nombre;
     int puntuacion;

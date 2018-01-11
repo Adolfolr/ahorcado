@@ -1,8 +1,3 @@
-<%-- 
-    Document   : createError
-    Created on : 28-dic-2017, 17:50:26
-    Author     : Clara
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

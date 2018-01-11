@@ -1,8 +1,3 @@
-<%-- 
-    Document   : JuegoAhorcado
-    Created on : 16-dic-2017, 18:46:36
-    Author     : rafael
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

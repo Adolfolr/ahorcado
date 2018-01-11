@@ -26,10 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-/**
- *
- * @author Clara
- */
 public class FiltroLogin implements Filter{
     DataSource datasource;
     Statement statement = null;

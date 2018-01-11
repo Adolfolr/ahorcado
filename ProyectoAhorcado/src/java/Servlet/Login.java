@@ -21,10 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author y9d1ru
- */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 

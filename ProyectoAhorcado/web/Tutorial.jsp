@@ -1,8 +1,4 @@
-<%-- 
-    Document   : Tutorial
-    Created on : 06-dic-2017, 18:35:07
-    Author     : rafael
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

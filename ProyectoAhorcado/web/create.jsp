@@ -1,8 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : 30-nov-2017, 21:45:49
-    Author     : rafael
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

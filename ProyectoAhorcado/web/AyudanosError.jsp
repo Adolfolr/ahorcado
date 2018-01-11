@@ -1,8 +1,4 @@
-<%-- 
-    Document   : AyudanosError
-    Created on : 04-ene-2018, 23:54:18
-    Author     : Clara
---%>
+
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
