@@ -30,7 +30,7 @@ public class LoginBBDD extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+     public final Object lock = new Object();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
@@ -65,6 +65,7 @@ public class LoginBBDD extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
         HttpSession sesion = request.getSession();
+        synchronized (lock) {
         BBDD bbdd = new BBDD();
         if(bbdd.comprobarUsuario(usuario, password)){
             Cookie nombreUsuario = new Cookie("Cookie", usuario);
@@ -84,6 +85,7 @@ public class LoginBBDD extends HttpServlet {
            // response.sendRedirect("/ProyectoAhorcado/loginError.jsp");
             
         }
+         }
     processRequest(request, response);
     }
 

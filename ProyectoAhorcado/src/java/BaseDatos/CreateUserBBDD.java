@@ -30,6 +30,7 @@ public class CreateUserBBDD extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+     public final Object lock = new Object();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
@@ -65,6 +66,7 @@ public class CreateUserBBDD extends HttpServlet {
         String password = request.getParameter("password");
         String passwordrep = request.getParameter("passwordrep");
         //Nuevo objeto para comprobar usuario y contraseña
+         synchronized (lock) {
         BBDD bbdd = new BBDD();
         if(bbdd.existeUsuario(usuario) && password.equals(passwordrep) && !password.isEmpty() && !usuario.isEmpty()){
             Cookie nombreUsuario = new Cookie("Cookie", usuario);
@@ -84,6 +86,7 @@ public class CreateUserBBDD extends HttpServlet {
             response.sendRedirect("/ProyectoAhorcado/createError.jsp");
             //response.sendRedirect("/ProyectoAhorcado/create.jsp?error=error");
         }
+       }
         processRequest(request, response);
     }
 
